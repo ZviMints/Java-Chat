@@ -14,7 +14,7 @@ public class Client {
 	private String serverhost;
 	private int serverport;
 	private Scanner userScanner;
-	
+
 	/* ************************** Setters and Getters ************************** */
 
 	public Client(String clientName, String host, int port) {
@@ -28,28 +28,28 @@ public class Client {
 	private void startClient(Scanner scan)
 	{
 		try {
-		Socket skt = new Socket(serverhost, serverport);
-		Thread.sleep(1000); // waiting for network communication for 1000 ms
-		ServerThread serverThread = new ServerThread(skt, username);
-		Thread serverAccessThread = new Thread(serverThread);
-		serverAccessThread.start();
-		
-		while(serverAccessThread.isAlive())
-		{
-			if(scan.hasNextLine())
+			Socket skt = new Socket(serverhost, serverport);
+			Thread.sleep(1000); // waiting for network communication for 1000 ms
+			ServerThread serverThread = new ServerThread(skt, username);
+			Thread serverAccessThread = new Thread(serverThread);
+			serverAccessThread.start();
+
+			while(serverAccessThread.isAlive())
 			{
-				serverThread.addNextMessage(scan.nextLine());
+				if(scan.hasNextLine())
+				{
+					serverThread.addNextMessage(scan.nextLine());
+				}
 			}
-		}
 		}
 		catch(Exception e)
 		{
 			System.err.println("Connection error!, Server Maybe Close");
 		}
 	}
-	
-	
-	
+
+
+
 	/* ************************** Main ************************** */
 	public static void main(String[] args)
 	{

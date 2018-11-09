@@ -11,6 +11,7 @@ import javax.swing.JTextArea;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -72,10 +73,14 @@ public class ClientGUI {
 		frmToChatChat.getContentPane().add(info_Server);
 
 		JButton btn_connected = new JButton("Connected\r\n");
+		btn_connected.addActionListener(new ActionListener() { // Connected has Pressed
+			public void actionPerformed(ActionEvent arg0) {
+			    JOptionPane.showMessageDialog(null, "WORKING ON IT");           // need to ADD
+			}
+		});
 		btn_connected.setBounds(298, 16, 115, 29);
 		frmToChatChat.getContentPane().add(btn_connected);
-
-		JButton btn_reset = new JButton("Reset\r\n");
+		JButton btn_reset = new JButton("Clear");
 		btn_reset.setBounds(298, 50, 115, 29);
 		btn_reset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) { // Reset has Pressed
@@ -130,6 +135,7 @@ public class ClientGUI {
 				allMsgFromallUsers.setBackground(Color.CYAN);
 				allMsgFromallUsers.setEditable(false);
 	}
+	
 	private String getUsername() {
 		return this.info_username;
 	}
