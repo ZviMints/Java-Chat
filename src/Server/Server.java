@@ -18,7 +18,7 @@ public class Server {
 	private static final int PORT = 9999; // Init the PORT for the server
 	private static String whoIsHere = "";
 	private static List<ClientThread> clients; // list of all clients 
-
+	private static ServerSocket myServer;
 	/**
 	 * This Method is Starting the Server, Init ServerSocket.
 	 */
@@ -26,7 +26,7 @@ public class Server {
 	{
 		clients = new ArrayList<ClientThread>();
 		try {
-			ServerSocket myServer = new ServerSocket(PORT);
+			myServer = new ServerSocket(PORT);
 			acceptClients(myServer);
 		}
 		catch(Exception e)
@@ -42,7 +42,6 @@ public class Server {
 				Socket skt = myServer.accept();
 				whoIsHere = skt.getInetAddress()+":"+skt.getPort() + "\n";
 				System.out.println("Hello: " + whoIsHere);
-				
 				ClientThread client = new ClientThread(this, skt);
 				Thread thread = new Thread(client);
 				thread.start();
@@ -61,7 +60,6 @@ public class Server {
 	public Server(int PORT)
 	{
 	}
-
 	/* ************************** Main ************************** */
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Start \"T&O\" Server");

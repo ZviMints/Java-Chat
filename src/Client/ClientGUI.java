@@ -52,7 +52,7 @@ public class ClientGUI {
 
 		frmToChatChat = new JFrame();
 		frmToChatChat.setTitle("T&O Chat: "+info_username+" Chat");
-		frmToChatChat.setBounds(100, 100, 452, 457);
+		frmToChatChat.setBounds(100, 100, 454, 501);
 		frmToChatChat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ImageIcon icon = new ImageIcon("./img/icon.png"); // Set Icon to Chat
 		frmToChatChat.setIconImage(icon.getImage());
@@ -71,16 +71,16 @@ public class ClientGUI {
 		info_Server.setBounds(15, 59, 174, 20);
 		frmToChatChat.getContentPane().add(info_Server);
 
-		JButton btn_connected = new JButton("Connected\r\n");
+		JButton btn_connected = new JButton("Who Is Online?");
 		btn_connected.addActionListener(new ActionListener() { // Connected has Pressed
 			public void actionPerformed(ActionEvent arg0) {
 			    JOptionPane.showMessageDialog(null, "WORKING ON IT");           // need to ADD
 			}
 		});
-		btn_connected.setBounds(298, 16, 115, 29);
+		btn_connected.setBounds(272, 16, 141, 29);
 		frmToChatChat.getContentPane().add(btn_connected);
 		JButton btn_reset = new JButton("Clear");
-		btn_reset.setBounds(298, 50, 115, 29);
+		btn_reset.setBounds(272, 55, 141, 29);
 		btn_reset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) { // Reset has Pressed
 				allMsgFromallUsers.setText("");
@@ -89,13 +89,13 @@ public class ClientGUI {
 		frmToChatChat.getContentPane().add(btn_reset);
 
 		textArea_msg = new JTextArea();
-		textArea_msg.setBounds(15, 331, 306, 54);
+		textArea_msg.setBounds(15, 375, 306, 54);
 		textArea_msg.setFont(new Font("Courier New", Font.PLAIN, 20));
 		textArea_msg.setBackground(Color.MAGENTA);
 		frmToChatChat.getContentPane().add(textArea_msg);
 
 		JButton btn_send = new JButton("Send");
-		btn_send.setBounds(336, 331, 81, 54);
+		btn_send.setBounds(332, 375, 81, 54);
 		btn_send.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { // Send Button has Clicked
 				if(!textArea_msg.getText().trim().equals(""))
@@ -123,7 +123,7 @@ public class ClientGUI {
 		frmToChatChat.getContentPane().add(btn_send);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(15, 95, 398, 220);
+		scrollPane.setBounds(15, 95, 398, 235);
 		frmToChatChat.getContentPane().add(scrollPane);
 		
 				allMsgFromallUsers = new JTextArea();
@@ -133,6 +133,10 @@ public class ClientGUI {
 				allMsgFromallUsers.setFont(new Font("Courier New", Font.PLAIN, 20));
 				allMsgFromallUsers.setBackground(Color.CYAN);
 				allMsgFromallUsers.setEditable(false);
+				
+				JLabel lbl_WhoIsOnline = new JLabel("<USERS ONLINE>"+" People are online right now.");
+				lbl_WhoIsOnline.setBounds(15, 331, 291, 34);
+				frmToChatChat.getContentPane().add(lbl_WhoIsOnline);
 	}
 	
 	private String getUsername() {
