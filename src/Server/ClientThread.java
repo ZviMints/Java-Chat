@@ -1,7 +1,6 @@
 /**
  * This class represent Server
  * @author Tzvi Mints And Or Abuhazira
- * Cloned: https://gist.github.com/fliedonion/1002293af6fd043fbd6e729c13018562
  */
 package Server;
 
