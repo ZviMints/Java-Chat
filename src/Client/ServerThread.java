@@ -3,24 +3,15 @@
  * @author Tzvi Mints And Or Abuhazira
  */
 package Client;
-
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.Scanner;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
-import java.awt.Font;
 import java.io.*;
 
 public class ServerThread implements Runnable {
 	private Socket skt;
 	private String username;
-	private boolean isAlive;
 	private final LinkedList<String> msgLL;
 	private boolean hasMsg = false;
 	private ClientGUI gui;

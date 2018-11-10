@@ -41,7 +41,6 @@ public class Server {
 			try {
 				Socket skt = myServer.accept();
 				whoIsHere = skt.getInetAddress()+":"+skt.getPort() + "\n";
-				System.out.println("Hello: " + whoIsHere);
 				ClientThread client = new ClientThread(this, skt);
 				Thread thread = new Thread(client);
 				thread.start();
@@ -60,6 +59,7 @@ public class Server {
 	public Server(int PORT)
 	{
 	}
+	
 	/* ************************** Main ************************** */
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Start \"T&O\" Server");
@@ -86,7 +86,5 @@ public class Server {
 				server.startServer();
 			}
 		});
-
 	}
-
 }

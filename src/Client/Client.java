@@ -5,6 +5,7 @@
 package Client;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Client {
 	private static final String host = "localhost";
@@ -13,6 +14,8 @@ public class Client {
 	private String serverhost;
 	private int serverport;
 	private Scanner userScanner;
+	private static Thread serverAccessThread;
+	private static int size = 0;
 
 	/* ************************** Setters and Getters ************************** */
 
@@ -30,9 +33,8 @@ public class Client {
 			Socket skt = new Socket(serverhost, serverport);
 			Thread.sleep(1000); // waiting for network communication for 1000 ms
 			ServerThread serverThread = new ServerThread(skt, username);
-			Thread serverAccessThread = new Thread(serverThread);
+			serverAccessThread = new Thread(serverThread);
 			serverAccessThread.start();
-
 			while(serverAccessThread.isAlive())
 			{
 				if(scan.hasNextLine())
@@ -46,8 +48,6 @@ public class Client {
 			System.err.println("Connection error!, Server Maybe Close");
 		}
 	}
-
-
 
 	/* ************************** Main ************************** */
 	public static void main(String[] args)

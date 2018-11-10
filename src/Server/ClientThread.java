@@ -24,7 +24,6 @@ public class ClientThread implements Runnable {
 	{
 		return this.out;
 	}
-
 	@Override
 	public void run() {
 		try {
