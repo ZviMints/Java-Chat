@@ -3,6 +3,7 @@
  * @author Tzvi Mints And Or Abuhazira
  */
 package Client;
+import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.Set;
@@ -15,7 +16,6 @@ public class Client {
 	private int serverport;
 	private Scanner userScanner;
 	private static Thread serverAccessThread;
-	private static int size = 0;
 
 	/* ************************** Setters and Getters ************************** */
 
@@ -31,6 +31,12 @@ public class Client {
 	{
 		try {
 			Socket skt = new Socket(serverhost, serverport);
+			
+		    PrintStream output = new PrintStream(skt.getOutputStream());
+		    // send UserName to server
+		    output.println(username);
+			
+			
 			Thread.sleep(1000); // waiting for network communication for 1000 ms
 			ServerThread serverThread = new ServerThread(skt, username);
 			serverAccessThread = new Thread(serverThread);

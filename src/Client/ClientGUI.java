@@ -80,7 +80,7 @@ public class ClientGUI {
 		JButton btn_connected = new JButton("Who Is Online?");
 		btn_connected.addActionListener(new ActionListener() { // Connected has Pressed
 			public void actionPerformed(ActionEvent arg0) {
-				String m = "NEED TO WORK ON IT";
+				String m = "Need to work on it!";
 			    JOptionPane.showMessageDialog(null, m);           // need to ADD
 			}
 		});
@@ -109,8 +109,13 @@ public class ClientGUI {
 				{
 					String info_username = getUsername();
 					String msg = allMsgFromallUsers.getText();
+					String UserInput = textArea_msg.getText();
+					if(UserInput.contains("@Messege"))
+					{
+						System.out.println("Its Private msg");
+					}
 					msg += "\n";
-					msg += "["+ info_username +"]: " + textArea_msg.getText();
+					msg += "["+ info_username +"]: " + UserInput;
 
 					out.println("["+ info_username +"]: " + textArea_msg.getText());
 					out.flush();		

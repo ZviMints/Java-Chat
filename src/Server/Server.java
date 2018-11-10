@@ -10,6 +10,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,6 +21,8 @@ public class Server {
 	private static String whoIsHere = "";
 	private static List<ClientThread> clients; // list of all clients 
 	private static ServerSocket myServer;
+	private static List<String> infoAboutClients; 
+
 	/**
 	 * This Method is Starting the Server, Init ServerSocket.
 	 */
@@ -40,6 +44,15 @@ public class Server {
 		while(true) {
 			try {
 				Socket skt = myServer.accept();
+				
+				// get nickname of newUser
+			      String username = (new Scanner ( skt.getInputStream() )).nextLine();
+			      username = username.replace(" ", "_");
+			      System.out.println("New Client: \"" + username + "\"" + "\n"
+			    		           + "Host:" + skt.getInetAddress().getHostAddress() + "\n"
+			    		           + "***********************************" );
+
+			    
 				whoIsHere = skt.getInetAddress()+":"+skt.getPort() + "\n";
 				ClientThread client = new ClientThread(this, skt);
 				Thread thread = new Thread(client);
@@ -59,7 +72,6 @@ public class Server {
 	public Server(int PORT)
 	{
 	}
-	
 	/* ************************** Main ************************** */
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Start \"T&O\" Server");
