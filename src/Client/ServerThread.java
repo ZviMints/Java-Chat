@@ -40,11 +40,6 @@ public class ServerThread implements Runnable {
 			InputStream in = skt.getInputStream();
 			Scanner serverin = new Scanner(in); 
 			while(skt.isConnected()){
-				if(in.available() > 0){
-					if(serverin.hasNextLine()){
-						System.err.println(serverin.nextLine());
-					}
-				}
 				if(hasMsg)
 				{
 					String msgtodeliever = "";
@@ -53,9 +48,8 @@ public class ServerThread implements Runnable {
 						hasMsg = !msgLL.isEmpty();
 					}
 				}
-				gui.setNewMsg(serverin.nextLine());
-
-				
+				String msgtodeliever = serverin.nextLine();
+				gui.setNewMsg(msgtodeliever);
 			}
 		}	  
 		catch(Exception e)

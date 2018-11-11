@@ -21,7 +21,6 @@ public class Server {
 	private static String whoIsHere = "";
 	private static List<ClientThread> clients; // list of all clients 
 	private static ServerSocket myServer;
-	private static List<String> infoAboutClients; 
 
 	/**
 	 * This Method is Starting the Server, Init ServerSocket.
@@ -51,7 +50,6 @@ public class Server {
 			      System.out.println("New Client: \"" + username + "\"" + "\n"
 			    		           + "Host:" + skt.getInetAddress().getHostAddress() + "\n"
 			    		           + "***********************************" );
-
 			    
 				whoIsHere = skt.getInetAddress()+":"+skt.getPort() + "\n";
 				ClientThread client = new ClientThread(this, skt);

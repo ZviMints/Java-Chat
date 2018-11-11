@@ -141,7 +141,7 @@ public class ClientGUI {
 				allMsgFromallUsers = new JTextArea();
 				scrollPane.setViewportView(allMsgFromallUsers);
 				allMsgFromallUsers.setLineWrap(true);
-				allMsgFromallUsers.setText("Welcome To Chat");
+				allMsgFromallUsers.setText(this.info_username+", Welcome To Chat");
 				allMsgFromallUsers.setFont(new Font("Courier New", Font.PLAIN, 20));
 				allMsgFromallUsers.setBackground(Color.CYAN);
 				allMsgFromallUsers.setEditable(false);

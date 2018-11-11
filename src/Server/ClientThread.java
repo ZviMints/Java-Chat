@@ -6,6 +6,7 @@ package Server;
 
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class ClientThread implements Runnable {
@@ -39,11 +40,15 @@ public class ClientThread implements Runnable {
 						// it will send it to all clients
 					{
 						PrintWriter clientOut = client.getWriter();
-						if(clientOut != null ) // there a message from the client
+						if(msg.contains("@")) // Private msg
 						{
-							clientOut.write(msg + "\n");
-							clientOut.flush();
+							
 						}
+							if(clientOut != null ) // there a message from the client
+							{
+								clientOut.write(msg + "\n");
+								clientOut.flush();
+							}
 					}
 				}
 			}
