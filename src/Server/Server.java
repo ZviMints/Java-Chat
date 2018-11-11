@@ -8,62 +8,72 @@ import java.awt.event.MouseEvent;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class Server {
 	private static final int PORT = 9999; // Init the PORT for the server
-	private static String whoIsHere = "";
-	private static List<ClientThread> clients; // list of all clients 
-	private static ServerSocket myServer;
-
+	String currnet_username = ""; // for print Hello to server
+	private static List<ThreadSERVER> clients; // list of all clients 
+	private static ServerSocket myServer; //
+	public static int count = 0;
 	/**
 	 * This Method is Starting the Server, Init ServerSocket.
 	 */
 	public void startServer()
 	{
-		clients = new ArrayList<ClientThread>();
+		clients = new ArrayList<ThreadSERVER>(); // init the client arraylist
 		try {
-			myServer = new ServerSocket(PORT);
-			acceptClients(myServer);
+			myServer = new ServerSocket(PORT); // Open the Server
+			acceptClients(myServer); // Now the Server can Accept clients
 		}
 		catch(Exception e)
 		{
 			System.err.println("Couldn't init the Server with "+PORT+" port");
 		}
 	}
-
-
+	/* ************************** Accept Clients ************************** */
 	private void acceptClients(ServerSocket myServer) {
 		while(true) {
 			try {
 				Socket skt = myServer.accept();
 				
-				// get nickname of newUser
-			      String username = (new Scanner ( skt.getInputStream() )).nextLine();
-			      username = username.replace(" ", "_");
-			      System.out.println("New Client: \"" + username + "\"" + "\n"
+				// Get username of new connection
+			     this.currnet_username = (new Scanner ( skt.getInputStream() )).nextLine();
+			      System.out.println("New Client: \"" + this.currnet_username + "\"" + "\n"
 			    		           + "Host:" + skt.getInetAddress().getHostAddress() + "\n"
 			    		           + "***********************************" );
 			    
-				whoIsHere = skt.getInetAddress()+":"+skt.getPort() + "\n";
-				ClientThread client = new ClientThread(this, skt);
-				Thread thread = new Thread(client);
-				thread.start();
-				clients.add(client);
+				ThreadSERVER client = new ThreadSERVER(this, skt); // Init Obj of ClientThread
+				clients.add(client); // client has added to the list
+				client.name = "current_username";
+				count++; // inc online users
+				Thread thread = new Thread(client); // Made a new Thread called thread
+				thread.start(); // Now thread.run will work
 			} catch (Exception e){
-				System.err.println("Couldn't make a Thread");
+				System.err.println("Fail on accept: "+PORT);
 			}	
 		}
 	}
 
 	/* ************************** Setters And Getters ************************** */
-	public List<ClientThread> getClients()
+	public static void print(String s)
+	{
+		System.out.println(s);
+	}
+	public static String whoIsOnline()
+	{
+		String s = "";
+		for(ThreadSERVER thread : clients)
+		{
+			s += thread.name + "\n";
+		}
+		return s;
+	}
+	public List<ThreadSERVER> getClients()
 	{
 		return clients;
 	}
@@ -92,8 +102,8 @@ public class Server {
 				frame.setVisible(false);
 				frame.dispose();
 
-				Server server = new Server(PORT);
-				server.startServer();
+				Server server = new Server(PORT); // Init Server with port PORT
+				server.startServer(); // Start running the Server
 			}
 		});
 	}

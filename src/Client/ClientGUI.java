@@ -28,35 +28,39 @@ public class ClientGUI {
 	private JTextArea allMsgFromallUsers; // The Big Msg from all users
 	private JTextArea textArea_msg; // What User Type
 	private Socket skt;
-	private PrintWriter out;
+	private ThreadCLIENT threadCLIENT;
 	/**
 	 * Create the application.
 	 * @param skt 
+	 * @param threadCLIENT 
 	 * @throws IOException 
 	 */
 	
-	public ClientGUI(String info_username,String info_localport, String info_Server, Socket skt ) throws IOException {	
+	public ClientGUI(String info_username,String info_localport, String info_Server, Socket skt, ThreadCLIENT threadCLIENT ) throws IOException {	
 		this.info_username = info_username;
 		this.info_localport = info_localport;
 		this.info_Server = info_Server;
 		this.skt = skt;
 		initialize();
 		this.frmToChatChat.setVisible(true);
+		this.threadCLIENT = threadCLIENT;
 	}
 	/**
 	 * Initialize the contents of the frame.
 	 * @throws IOException 
 	 */
 	private void initialize() throws IOException {
-		out = new PrintWriter(skt.getOutputStream(),false);
 		frmToChatChat = new JFrame();
 		frmToChatChat.setTitle("T&O Chat: "+info_username+" Chat");
 		frmToChatChat.setBounds(100, 100, 454, 501);
 		
 		frmToChatChat.addWindowListener(new WindowAdapter() {
-			  public void windowClosing(WindowEvent we) {
-				  out.println(" -> ["+ info_username +"] Has Disconnected");
-					out.flush();		
+			  public void windowClosing(WindowEvent we) { // Closing the frame
+				try {
+					threadCLIENT.stop();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			    System.exit(0);
 			  }
 			});
@@ -78,10 +82,10 @@ public class ClientGUI {
 		frmToChatChat.getContentPane().add(info_Server);
 
 		JButton btn_connected = new JButton("Who Is Online?");
-		btn_connected.addActionListener(new ActionListener() { // Connected has Pressed
+		btn_connected.addActionListener(new ActionListener() { // Whoisonline has Pressed
 			public void actionPerformed(ActionEvent arg0) {
-				String m = "Need to work on it!";
-			    JOptionPane.showMessageDialog(null, m);           // need to ADD
+				String m = Server.Server.whoIsOnline();
+			    JOptionPane.showMessageDialog(null, m);           
 			}
 		});
 		btn_connected.setBounds(272, 16, 141, 29);
@@ -108,18 +112,9 @@ public class ClientGUI {
 				if(!textArea_msg.getText().trim().equals(""))
 				{
 					String info_username = getUsername();
-					String msg = allMsgFromallUsers.getText();
 					String UserInput = textArea_msg.getText();
-					if(UserInput.contains("@Messege"))
-					{
-						System.out.println("Its Private msg");
-					}
-					msg += "\n";
-					msg += "["+ info_username +"]: " + UserInput;
 
-					out.println("["+ info_username +"]: " + textArea_msg.getText());
-					out.flush();		
-					
+					threadCLIENT.addNextMessage("["+ info_username +"]: " + UserInput);
 					textArea_msg.setText("");
 				}
 
@@ -146,10 +141,12 @@ public class ClientGUI {
 				allMsgFromallUsers.setBackground(Color.CYAN);
 				allMsgFromallUsers.setEditable(false);
 				
-				JLabel lbl_WhoIsOnline = new JLabel("<"+">"+" People are online right now.");
+				JLabel lbl_WhoIsOnline = new JLabel("<"+Server.Server.count+">"+" People are online right now.");
 				lbl_WhoIsOnline.setBounds(15, 331, 291, 34);
 				frmToChatChat.getContentPane().add(lbl_WhoIsOnline);
 	}
+
+	/* ************************** Setters and Getters ************************** */
 
 	private String getUsername() {
 		return this.info_username;

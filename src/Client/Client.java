@@ -14,8 +14,7 @@ public class Client {
 	private String username;
 	private String serverhost;
 	private int serverport;
-	private Scanner userScanner;
-	private static Thread serverAccessThread;
+
 
 	/* ************************** Setters and Getters ************************** */
 
@@ -27,27 +26,20 @@ public class Client {
 
 	/* ************************** Methods ************************** */
 
-	private void startClient(Scanner scan)
+	private void startClient()
 	{
 		try {
 			Socket skt = new Socket(serverhost, serverport);
-			
+			Thread.sleep(1000); // waiting for network communication for 1000 ms
+			ThreadCLIENT threadCLIENT = new ThreadCLIENT(skt, username);
+			Thread serverAccessThread = new Thread(threadCLIENT); // Open new Thread for each user
+			serverAccessThread.start();
+
 		    PrintStream output = new PrintStream(skt.getOutputStream());
 		    // send UserName to server
 		    output.println(username);
-			
-			
-			Thread.sleep(1000); // waiting for network communication for 1000 ms
-			ServerThread serverThread = new ServerThread(skt, username);
-			serverAccessThread = new Thread(serverThread);
-			serverAccessThread.start();
-			while(serverAccessThread.isAlive())
-			{
-				if(scan.hasNextLine())
-				{
-					serverThread.addNextMessage(scan.nextLine());
-				}
-			}
+	
+		  
 		}
 		catch(Exception e)
 		{
@@ -58,19 +50,19 @@ public class Client {
 	/* ************************** Main ************************** */
 	public static void main(String[] args)
 	{
-		String ClientName = null;
+		String get_username = null; 
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Enter username:");
-		while(ClientName == null || ClientName.trim().equals(""))
+		while(get_username == null || get_username.trim().equals(""))
 		{
-			ClientName = scan.nextLine();
-			if(ClientName.trim().equals("")) // remove whitespaces
+			get_username = scan.nextLine();
+			if(get_username.trim().equals("")) // remove whitespaces
 			{
 				System.out.println("Invalid username, try again");
 			}
 		}
-		// Now there a user with name == ClientName
-		Client client = new Client(ClientName,host,PORT);
-		client.startClient(scan);
+		// Now there a user with name == get_username
+		Client client = new Client(get_username,host,PORT);
+		client.startClient();
 	}
 }
