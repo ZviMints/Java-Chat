@@ -65,14 +65,22 @@ public class ThreadSERVER implements Runnable {
 		}
 	}
 	/* ************************** Private ************************** */
-	public void Private(String to,String from, String message) {
+	public void Private(String to,String from, String message, boolean LIST) { // LIST IS FOR SHOWING WHO ONLINE
 		for(ThreadSERVER client : myServer.getClients()) 
 		{
 			if(client.name.equals(to))
 			{
 				PrintWriter pw_oftheclient = client.getWriter();
+				if(!LIST)
+				{
 				pw_oftheclient.write("[Private Msg From "+from+"]: "+message + "\n");
 				pw_oftheclient.flush();
+				}
+				else
+				{
+					pw_oftheclient.write("Online users:"+message + "\n");
+					pw_oftheclient.flush();	
+				}
 			}
 		}
 	}
@@ -98,7 +106,7 @@ public class ThreadSERVER implements Runnable {
 						String username_from = msg.substring(1,index_name);
 						String deliver = msg.substring(index_line+1);
 						System.out.println(username_to+","+username_from+","+deliver);
-						Private(username_to,username_from,deliver);
+						Private(username_to,username_from,deliver,false);
 					}
 					else
 					{
@@ -110,19 +118,23 @@ public class ThreadSERVER implements Runnable {
 							System.out.println("*****************");
 							System.out.println("Closing \""+username+"\"...");
 							Server.count--;
+							Broadcast("<update>");
 							System.out.println("Left Online:"+Server.count);
 							System.out.println("\""+ username +"\" Removed From Client List");
 							System.out.println("*****************");
 							Broadcast(" -> ["+ username +"] Has Disconnected" + "\n");
-							Broadcast("<update>"+Server.count);
 							skt.close();
 						}
 						else if(msg.contains("<getnames>"))
 						{
 							int index_triangle = msg.indexOf("<");
 							String username = msg.substring(0,index_triangle);
-							Private(username,username,"<getnames>"+getNames());
+							Private(username,username,getNames(),true);
 
+						}
+						else if(msg.contains("<update>"))
+						{
+							Broadcast("<update>"+Server.count);
 						}
 						else // BROADCAST MSG
 						{

@@ -52,6 +52,7 @@ public class ClientGUI {
 		initialize();
 		this.frmToChatChat.setVisible(true);
 		this.threadCLIENT = threadCLIENT;
+		threadCLIENT.addNextMessage("<update>");
 	}
 	/**
 	 * Initialize the contents of the frame.
@@ -164,20 +165,17 @@ public class ClientGUI {
 		return this.username;
 	}
 	public void setNewMsg(String msg) {
+		System.err.println(msg); // Print all msg
 		if(msg.contains("<update>"))
 		{
 			String temp = msg.replace("<update>", "");
 			count = Integer.parseInt(temp);
 			lbl_WhoIsOnline.setText("<"+count+">"+" People are online right now.");
 		}
-		if(msg.contains("<getnames>"))
+		else
 		{
-			int index_triangle = msg.indexOf(">");
-			onlinelistreqLIST = "Online users: "+msg.substring(index_triangle+1);
-			onlinelistreqFLAG = false;
-			msg = onlinelistreqLIST;
-		}
 		String temp = allMsgFromallUsers.getText() + "\n" + msg;
 		allMsgFromallUsers.setText(temp);
+		}
 	}		
 }
