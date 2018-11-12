@@ -43,13 +43,14 @@ public class Server {
 				
 				// Get username of new connection
 			     this.currnet_username = (new Scanner ( skt.getInputStream() )).nextLine();
-			      System.out.println("New Client: \"" + this.currnet_username + "\"" + "\n"
+			      System.out.println("***********************************" + "\n"
+			      		           + "New Client: \"" + this.currnet_username + "\"" + "\n"
 			    		           + "Host:" + skt.getInetAddress().getHostAddress() + "\n"
 			    		           + "***********************************" );
 			    
 				ThreadSERVER client = new ThreadSERVER(this, skt); // Init Obj of ClientThread
 				clients.add(client); // client has added to the list
-				client.name = "current_username";
+				client.name = this.currnet_username;
 				count++; // inc online users
 				Thread thread = new Thread(client); // Made a new Thread called thread
 				thread.start(); // Now thread.run will work

@@ -7,6 +7,9 @@ import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
+
+import Server.Server;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -17,27 +20,32 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 
 public class ClientGUI {
 	private JFrame frmToChatChat;
-	private String info_username;
+	private String username;
 	private String info_localport ;
 	private String info_Server;
 	private JTextArea allMsgFromallUsers; // The Big Msg from all users
 	private JTextArea textArea_msg; // What User Type
 	private Socket skt;
+	private int count = -1;
+	private JLabel lbl_WhoIsOnline;
 	private ThreadCLIENT threadCLIENT;
+	private boolean onlinelistreqFLAG = false;
+	private String onlinelistreqLIST = "";
 	/**
 	 * Create the application.
 	 * @param skt 
 	 * @param threadCLIENT 
 	 * @throws IOException 
 	 */
-	
+
 	public ClientGUI(String info_username,String info_localport, String info_Server, Socket skt, ThreadCLIENT threadCLIENT ) throws IOException {	
-		this.info_username = info_username;
+		this.username = info_username;
 		this.info_localport = info_localport;
 		this.info_Server = info_Server;
 		this.skt = skt;
@@ -51,25 +59,25 @@ public class ClientGUI {
 	 */
 	private void initialize() throws IOException {
 		frmToChatChat = new JFrame();
-		frmToChatChat.setTitle("T&O Chat: "+info_username+" Chat");
+		frmToChatChat.setTitle("T&O Chat: "+this.username+" Chat");
 		frmToChatChat.setBounds(100, 100, 454, 501);
-		
+
 		frmToChatChat.addWindowListener(new WindowAdapter() {
-			  public void windowClosing(WindowEvent we) { // Closing the frame
+			public void windowClosing(WindowEvent we) { // Closing the frame
 				try {
 					threadCLIENT.stop();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			    System.exit(0);
-			  }
-			});
+				System.exit(0);
+			}
+		});
 		ImageIcon icon = new ImageIcon("./img/icon.png"); // Set Icon to Chat
 		frmToChatChat.setIconImage(icon.getImage());
 		frmToChatChat.getContentPane().setLayout(null);
 
 
-		JLabel info_username = new JLabel("Username: "+this.info_username);
+		JLabel info_username = new JLabel("Username: "+this.username);
 		info_username.setBounds(15, 0, 189, 34);
 		frmToChatChat.getContentPane().add(info_username);
 
@@ -84,8 +92,12 @@ public class ClientGUI {
 		JButton btn_connected = new JButton("Who Is Online?");
 		btn_connected.addActionListener(new ActionListener() { // Whoisonline has Pressed
 			public void actionPerformed(ActionEvent arg0) {
-				String m = Server.Server.whoIsOnline();
-			    JOptionPane.showMessageDialog(null, m);           
+				threadCLIENT.addNextMessage(username+"<getnames>");
+					if(onlinelistreqFLAG)
+					{
+						JOptionPane.showMessageDialog(null, onlinelistreqLIST);   
+						onlinelistreqFLAG = true;
+					}
 			}
 		});
 		btn_connected.setBounds(272, 16, 141, 29);
@@ -128,30 +140,43 @@ public class ClientGUI {
 			}
 		});
 		frmToChatChat.getContentPane().add(btn_send);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(15, 95, 398, 235);
 		frmToChatChat.getContentPane().add(scrollPane);
-		
-				allMsgFromallUsers = new JTextArea();
-				scrollPane.setViewportView(allMsgFromallUsers);
-				allMsgFromallUsers.setLineWrap(true);
-				allMsgFromallUsers.setText(this.info_username+", Welcome To Chat");
-				allMsgFromallUsers.setFont(new Font("Courier New", Font.PLAIN, 20));
-				allMsgFromallUsers.setBackground(Color.CYAN);
-				allMsgFromallUsers.setEditable(false);
-				
-				JLabel lbl_WhoIsOnline = new JLabel("<"+Server.Server.count+">"+" People are online right now.");
-				lbl_WhoIsOnline.setBounds(15, 331, 291, 34);
-				frmToChatChat.getContentPane().add(lbl_WhoIsOnline);
+
+		allMsgFromallUsers = new JTextArea();
+		scrollPane.setViewportView(allMsgFromallUsers);
+		allMsgFromallUsers.setLineWrap(true);
+		allMsgFromallUsers.setText(this.username+", Welcome To Chat");
+		allMsgFromallUsers.setFont(new Font("Courier New", Font.PLAIN, 20));
+		allMsgFromallUsers.setBackground(Color.CYAN);
+		allMsgFromallUsers.setEditable(false);
+
+		lbl_WhoIsOnline = new JLabel("<"+count+">"+" People are online right now.");
+		lbl_WhoIsOnline.setBounds(15, 331, 291, 34);
+		frmToChatChat.getContentPane().add(lbl_WhoIsOnline);
 	}
 
 	/* ************************** Setters and Getters ************************** */
 
 	private String getUsername() {
-		return this.info_username;
+		return this.username;
 	}
 	public void setNewMsg(String msg) {
+		if(msg.contains("<update>"))
+		{
+			String temp = msg.replace("<update>", "");
+			count = Integer.parseInt(temp);
+			lbl_WhoIsOnline.setText("<"+count+">"+" People are online right now.");
+		}
+		if(msg.contains("<getnames>"))
+		{
+			int index_triangle = msg.indexOf(">");
+			onlinelistreqLIST = "Online users: "+msg.substring(index_triangle+1);
+			onlinelistreqFLAG = false;
+			msg = onlinelistreqLIST;
+		}
 		String temp = allMsgFromallUsers.getText() + "\n" + msg;
 		allMsgFromallUsers.setText(temp);
 	}		

@@ -36,10 +36,8 @@ public class ThreadCLIENT implements Runnable {
 
 	public void stop() throws IOException{
 		PrintWriter output = new PrintWriter(skt.getOutputStream(),false);
-		output.println(" -> ["+ username +"] Has Disconnected"); // to all other clients
+		output.println(username+"<close>");
 		output.flush();
-		Server.Server.count--; // dec the count
-		Server.Server.print(" -> ["+ username +"] Has Disconnected"); // to the server
 		exit = true;
 	}
 	/* ************************** Run THREAD method ************************** */
@@ -72,7 +70,7 @@ public class ThreadCLIENT implements Runnable {
 			}	  
 			catch(Exception e)
 			{
-				System.err.println("Error! From ServerThread");
+				System.err.println("Error! From ThreadCLIENT");
 			}
 		}
 	}
