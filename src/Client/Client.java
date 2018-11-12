@@ -3,10 +3,18 @@
  * @author Tzvi Mints And Or Abuhazira
  */
 package Client;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.Set;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 public class Client {
 	private static final String host = "localhost";
@@ -47,9 +55,51 @@ public class Client {
 		}
 	}
 
+	/* ************************** InitWindow ************************** */
+	public static void InitWindow()
+	{
+		JFrame login_frame = new JFrame();
+		login_frame.setTitle("T&O Chat: Login\r\n");
+		login_frame.setBounds(100, 100, 522, 188);
+		login_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		login_frame.getContentPane().setLayout(null);
+
+		JTextField txtEnterNameHere = new JTextField();
+		txtEnterNameHere.setBounds(230, 67, 254, 49);
+		login_frame.getContentPane().add(txtEnterNameHere);
+		txtEnterNameHere.setColumns(10);
+		ImageIcon icon = new ImageIcon("./img/icon.png"); // Set Icon to Chat
+		login_frame.setIconImage(icon.getImage());
+		JLabel login_title = new JLabel(new ImageIcon("./img/login_title.png"));
+		JLabel login_button = new JLabel(new ImageIcon("./img/login.png"));
+
+		login_frame.add(login_button);
+		login_frame.add(login_title);
+		login_title.setBounds(260, 10, 204, 69);
+		login_button.setBounds(20, 60, 204, 69);
+		login_frame.setVisible(true);
+
+		// On Click "Login"
+		login_button.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if(txtEnterNameHere.getText().contains(" ")) // remove whitespaces
+				{
+					JOptionPane.showMessageDialog(null, "Invalid name! \n the name contain spaces or \n"
+							+"alredy in use"); 
+					/// NEED TO ADD SEARCH FOR USED
+				}
+				else
+				{
+					// NEED TO SEND txtEnterNameHere.getText() and CLOSE .
+				}
+			}
+		});
+	}
+	
 	/* ************************** Main ************************** */
 	public static void main(String[] args)
 	{
+		InitWindow();
 		String get_username = null; 
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Enter username:");

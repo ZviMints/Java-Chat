@@ -43,8 +43,7 @@ public class Server {
 				
 				// Get username of new connection
 			     this.currnet_username = (new Scanner ( skt.getInputStream() )).nextLine();
-			      System.out.println("***********************************" + "\n"
-			      		           + "New Client: \"" + this.currnet_username + "\"" + "\n"
+			      System.out.println("New Client: \"" + this.currnet_username + "\"" + "\n"
 			    		           + "Host:" + skt.getInetAddress().getHostAddress() + "\n"
 			    		           + "***********************************" );
 			    

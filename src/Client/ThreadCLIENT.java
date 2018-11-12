@@ -70,7 +70,7 @@ public class ThreadCLIENT implements Runnable {
 			}	  
 			catch(Exception e)
 			{
-				System.err.println("Error! From ThreadCLIENT");
+				System.err.println("Error! From ServerThread");
 			}
 		}
 	}

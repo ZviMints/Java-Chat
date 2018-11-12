@@ -51,7 +51,9 @@ public class ThreadSERVER implements Runnable {
 		String s = "";
 		for(ThreadSERVER client : myServer.getClients())
 		{
-			s = s + client.name +"\n";
+			if(s!="")
+			s+=",";
+			s = s + client.name;
 		}
 		return s;
 	}
@@ -78,13 +80,14 @@ public class ThreadSERVER implements Runnable {
 				}
 				else
 				{
-					pw_oftheclient.write("Online users:"+message + "\n");
+					pw_oftheclient.write("Online users:" + message + "\n");
 					pw_oftheclient.flush();	
 				}
 			}
 		}
 	}
 	/* ************************** Run ( SERVER THREAD ) ************************** */
+
 	@Override
 	public void run() {
 		try {
@@ -95,6 +98,7 @@ public class ThreadSERVER implements Runnable {
 				if(input.hasNextLine())
 				{
 					String msg = input.nextLine();
+					System.out.println(msg); // Print all msg
 					if(msg.contains("@")) // Private msg
 					{
 						System.out.println(msg);
@@ -118,7 +122,6 @@ public class ThreadSERVER implements Runnable {
 							System.out.println("*****************");
 							System.out.println("Closing \""+username+"\"...");
 							Server.count--;
-							Broadcast("<update>");
 							System.out.println("Left Online:"+Server.count);
 							System.out.println("\""+ username +"\" Removed From Client List");
 							System.out.println("*****************");
@@ -129,12 +132,8 @@ public class ThreadSERVER implements Runnable {
 						{
 							int index_triangle = msg.indexOf("<");
 							String username = msg.substring(0,index_triangle);
-							Private(username,username,getNames(),true);
-
-						}
-						else if(msg.contains("<update>"))
-						{
-							Broadcast("<update>"+Server.count);
+							String temp = getNames();
+							Private(username,username,temp,true);
 						}
 						else // BROADCAST MSG
 						{
