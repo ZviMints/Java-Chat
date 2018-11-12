@@ -80,7 +80,7 @@ public class ThreadSERVER implements Runnable {
 				}
 				else
 				{
-					pw_oftheclient.write("Online users:" + message + "\n");
+					pw_oftheclient.write(Server.count+" online users: " + message + "\n");
 					pw_oftheclient.flush();	
 				}
 			}
