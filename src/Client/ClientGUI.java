@@ -163,6 +163,10 @@ public class ClientGUI {
 			msg = s_count.substring(1);
 			
 		}
+		else if(msg.equals("<closeme>")) // gets here only if server close himself
+		{
+			System.exit(0);
+		}
 			String temp = allMsgFromallUsers.getText() + "\n" + msg;
 			allMsgFromallUsers.setText(temp);
 	}

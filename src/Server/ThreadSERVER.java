@@ -37,7 +37,7 @@ public class ThreadSERVER implements Runnable {
 		}
 		return ans;
 	}
-	private String getNames()
+	public String getNames()
 	{
 		String s = "";
 		for(ThreadSERVER client : myServer.getClients())
@@ -91,73 +91,73 @@ public class ThreadSERVER implements Runnable {
 	/* ************************** Run ( SERVER THREAD ) ************************** */
 	@Override
 	public void run() {
-		try {
-			this.output = new PrintWriter(skt.getOutputStream(),false);
-			Broadcast("<update>"+Server.count+" -> ["+ name +"] Has Connected");
-			input = new Scanner(skt.getInputStream());
-			while(skt.isConnected()) // There connection with the server the current CLIENT
-			{
-				if(input.hasNextLine())
+			try {
+				this.output = new PrintWriter(skt.getOutputStream(),false);
+				Broadcast("<update>"+Server.count+" -> ["+ name +"] Has Connected");
+				input = new Scanner(skt.getInputStream());
+				while(skt.isConnected()) // There connection with the server the current CLIENT
 				{
-					String msg = input.nextLine();
-					if(msg.contains("@")) // Private msg
+					if(input.hasNextLine())
 					{
-						try {
-							// MUST BE OF THE FORM @<name>|<msg>
-							int index_a = msg.indexOf("@");
-							int index_name = msg.indexOf("]");
-							int index_line = msg.indexOf("|");
-							int index_triangle = msg.indexOf(">");
-							String time = msg.substring(1,index_triangle);
-							String username_to = msg.substring(index_a+1,index_line);
-							String username_from = msg.substring(index_triangle+2,index_name);
-							String deliver = msg.substring(index_line+1);
-							System.out.println(username_to+","+username_from+","+deliver);
-							Private(username_to,username_from,"<"+time+">"+"[Private From "+username_from+"]: "+deliver,false);
-						}
-						catch(Exception e)
+						String msg = input.nextLine();
+						if(msg.contains("@")) // Private msg
 						{
-							int index_name = msg.indexOf("]");
-							int index_triangle = msg.indexOf(">");
-							String username_from = msg.substring(index_triangle+2,index_name);
-							String temp = "Wrong Format! Try: '@<name>|<msg>'";
-							Private(username_from,username_from,temp,false);
+							try {
+								// MUST BE OF THE FORM @<name>|<msg>
+								int index_a = msg.indexOf("@");
+								int index_name = msg.indexOf("]");
+								int index_line = msg.indexOf("|");
+								int index_triangle = msg.indexOf(">");
+								String time = msg.substring(1,index_triangle);
+								String username_to = msg.substring(index_a+1,index_line);
+								String username_from = msg.substring(index_triangle+2,index_name);
+								String deliver = msg.substring(index_line+1);
+								System.out.println(username_to+","+username_from+","+deliver);
+								Private(username_to,username_from,"<"+time+">"+"[Private From "+username_from+"]: "+deliver,false);
+							}
+							catch(Exception e)
+							{
+								int index_name = msg.indexOf("]");
+								int index_triangle = msg.indexOf(">");
+								String username_from = msg.substring(index_triangle+2,index_name);
+								String temp = "Wrong Format! Try: '@<name>|<msg>'";
+								Private(username_from,username_from,temp,false);
+							}
+						}
+						else
+						{
+							if(msg.contains("<close>"))
+							{
+								int index_triangle = msg.indexOf("<");
+								String username = msg.substring(0,index_triangle);
+								myServer.getClients().remove(GetClientByName(username));
+								Server.count--;
+								Server.setText("*****************" + "\n" +
+										"Closing \""+username+"\"..." + "\n" +
+										"Left Online:"+Server.count + "\n" +
+										"\""+ username +"\" Removed From Client List" + "\n" +
+										"*****************");
+								Broadcast("<update>"+Server.count+" -> ["+ username +"] Has Disconnected");
+								skt.close();
+							}
+							else if(msg.contains("<getnames>"))
+							{
+								int index_triangle = msg.indexOf("<");
+								String username = msg.substring(0,index_triangle);
+								String temp = getNames();
+								Private(username,username,temp,true);
+							}
+							else // BROADCAST MSG
+							{
+								Broadcast(msg);
+							}
 						}
 					}
-					else
-					{
-						if(msg.contains("<close>"))
-						{
-							int index_triangle = msg.indexOf("<");
-							String username = msg.substring(0,index_triangle);
-							myServer.getClients().remove(GetClientByName(username));
-							Server.count--;
-							Server.setText("*****************" + "\n" +
-									"Closing \""+username+"\"..." + "\n" +
-									"Left Online:"+Server.count + "\n" +
-									"\""+ username +"\" Removed From Client List" + "\n" +
-									"*****************");
-							Broadcast("<update>"+Server.count+" -> ["+ username +"] Has Disconnected");
-							skt.close();
-						}
-						else if(msg.contains("<getnames>"))
-						{
-							int index_triangle = msg.indexOf("<");
-							String username = msg.substring(0,index_triangle);
-							String temp = getNames();
-							Private(username,username,temp,true);
-						}
-						else // BROADCAST MSG
-						{
-							Broadcast(msg);
-						}
-					}
-				}
-			}			
-		}
-		catch(Exception e)
-		{
-			System.err.println("Error from ThreadSERVER");
+				}			
+			}
+			catch(Exception e)
+			{
+				System.err.println("Error from ThreadSERVER");
+			}
 		}
 	}
-}

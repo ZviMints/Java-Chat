@@ -3,11 +3,18 @@
  * @author Tzvi Mints And Or Abuhazira
  */
 package Client;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
@@ -68,7 +75,7 @@ public class Client {
 	{
 		return  !login_frame.isVisible();
 	}
-	
+
 	/* ************************** InitWindow ************************** */
 	static JTextField txtEnterNameHere;
 	static JFrame login_frame;
@@ -83,6 +90,7 @@ public class Client {
 
 		txtEnterNameHere = new JTextField();
 		txtEnterNameHere.setText("");
+		txtEnterNameHere.setFont(new Font("Courier New", Font.PLAIN, 20));
 		txtEnterNameHere.setBounds(230, 67, 254, 49);
 		login_frame.getContentPane().add(txtEnterNameHere);
 		txtEnterNameHere.setColumns(10);
@@ -104,15 +112,37 @@ public class Client {
 					JOptionPane.showMessageDialog(null, "Invalid name! \n "
 							+ "the name contain spaces or empty"); 
 				}
-//				else if(AlredyInUse(txtEnterNameHere.getText())) // if name alredy in use
-//				{
-//					JOptionPane.showMessageDialog(null, "Invalid name! \n "
-//							+ "the name alredy in use"); 
-//				}
 				else
 				{
-					login_frame.setVisible(false);
-					login_frame.dispose();
+					boolean ServerOpen = false;
+					try {
+						Socket skt = new Socket(host, PORT);
+						ServerOpen = true;
+						PrintWriter out = new PrintWriter(skt.getOutputStream(), true);
+						BufferedReader in = new BufferedReader(new InputStreamReader(skt.getInputStream()));
+						while(skt.isConnected())
+						{					
+							out.println(txtEnterNameHere.getText());
+							if(in.readLine().equals("OK"))
+							{
+								skt.close();
+								login_frame.setVisible(false);
+								login_frame.dispose();
+							}
+							else
+							{
+								JOptionPane.showMessageDialog(null, "Invalid name! \n "
+										+ "the name alredy in use."); 
+								skt.close();
+							}	
+							System.out.println(in.readLine());
+						}
+					}
+					catch (IOException e1) {
+						if(!ServerOpen)
+							JOptionPane.showMessageDialog(null, "Sorry, \n "
+									+ "The Server is CLOSE"); 
+					}	
 				}
 			}
 		});
