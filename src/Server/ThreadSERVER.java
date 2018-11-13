@@ -27,15 +27,6 @@ public class ThreadSERVER implements Runnable {
 	{
 		return this.output;
 	}
-	public String getOnlineList()
-	{
-		String s = "";
-		for(ThreadSERVER client : myServer.getClients())
-		{
-			s = s + client.name + ",";
-		}
-		return s;
-	}
 	private ThreadSERVER GetClientByName(String name)
 	{
 		ThreadSERVER ans = null;
@@ -52,13 +43,16 @@ public class ThreadSERVER implements Runnable {
 		for(ThreadSERVER client : myServer.getClients())
 		{
 			if(s!="")
-			s+=",";
+				s+=",";
 			s = s + client.name;
 		}
 		return s;
 	}
+
 	/* ************************** Broadcast ************************** */
 	public void Broadcast(String message){
+		Server.setText(message);
+
 		for(ThreadSERVER client : myServer.getClients())
 		{
 			PrintWriter pw_oftheclient = client.getWriter();
@@ -76,14 +70,16 @@ public class ThreadSERVER implements Runnable {
 				PrintWriter pw_oftheclient = client.getWriter();
 				if(!LIST)
 				{
-				pw_oftheclient.write(message + "\n");
-				pw_oftheclient.flush();
-				found = true;
+					pw_oftheclient.write(message + "\n");
+					pw_oftheclient.flush();
+					found = true;
+					Server.setText(message);
 				}
 				else
 				{
 					pw_oftheclient.write(Server.count+" online users: " + message + "\n");
 					pw_oftheclient.flush();	
+					Server.setText(Server.count+" online users: " + message);
 				}
 			}
 		}
@@ -93,7 +89,6 @@ public class ThreadSERVER implements Runnable {
 		}
 	}
 	/* ************************** Run ( SERVER THREAD ) ************************** */
-
 	@Override
 	public void run() {
 		try {
@@ -105,7 +100,8 @@ public class ThreadSERVER implements Runnable {
 				if(input.hasNextLine())
 				{
 					String msg = input.nextLine();
-					System.out.println(msg); // Print all msg
+					Server.setText(msg);
+
 					if(msg.contains("@")) // Private msg
 					{
 						try {
@@ -123,7 +119,6 @@ public class ThreadSERVER implements Runnable {
 						}
 						catch(Exception e)
 						{
-							System.out.println(msg);
 							int index_name = msg.indexOf("]");
 							int index_triangle = msg.indexOf(">");
 							String username_from = msg.substring(index_triangle+2,index_name);
@@ -138,12 +133,12 @@ public class ThreadSERVER implements Runnable {
 							int index_triangle = msg.indexOf("<");
 							String username = msg.substring(0,index_triangle);
 							myServer.getClients().remove(GetClientByName(username));
-							System.out.println("*****************");
-							System.out.println("Closing \""+username+"\"...");
 							Server.count--;
-							System.out.println("Left Online:"+Server.count);
-							System.out.println("\""+ username +"\" Removed From Client List");
-							System.out.println("*****************");
+							Server.setText("*****************" + "\n" +
+									"Closing \""+username+"\"..." + "\n" +
+									"Left Online:"+Server.count + "\n" +
+									"\""+ username +"\" Removed From Client List" + "\n" +
+									"*****************");
 							Broadcast("<update>"+Server.count+" -> ["+ username +"] Has Disconnected");
 							skt.close();
 						}

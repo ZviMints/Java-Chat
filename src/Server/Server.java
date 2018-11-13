@@ -30,7 +30,6 @@ public class Server {
 	 */
 	public void startServer()
 	{
-		InitWindow_AfterStart();
 		clients = new ArrayList<ThreadSERVER>(); // init the client arraylist
 		try {
 			myServer = new ServerSocket(PORT); // Open the Server
@@ -43,13 +42,13 @@ public class Server {
 	}
 	/* ************************** Accept Clients ************************** */
 	private void acceptClients(ServerSocket myServer) {
+		InitWindow_AfterStart();
 		while(true) {
 			try {
 				Socket skt = myServer.accept();
-
 				// Get username of new connection
 				this.currnet_username = (new Scanner ( skt.getInputStream() )).nextLine();
-				System.out.println("New Client: \"" + this.currnet_username + "\"" + "\n"
+				setText("New Client: \"" + this.currnet_username + "\"" + "\n"
 						+ "Host:" + skt.getInetAddress().getHostAddress() + "\n"
 						+ "***********************************" );
 
@@ -70,15 +69,6 @@ public class Server {
 	{
 		System.out.println(s);
 	}
-	public static String whoIsOnline()
-	{
-		String s = "";
-		for(ThreadSERVER thread : clients)
-		{
-			s += thread.name + "\n";
-		}
-		return s;
-	}
 	public List<ThreadSERVER> getClients()
 	{
 		return clients;
@@ -86,46 +76,40 @@ public class Server {
 	public Server(int PORT)
 	{
 	}
-	/* ************************** Main ************************** */
-	public static void main(String[] args) throws InterruptedException {
-		InitWindow_BeforeStart();
-		while(true)
-		{
-			Thread.sleep(500);
-			if(Closed())
-			{
-				Server server = new Server(PORT); // Init Server with port PORT
-				server.startServer(); // Start running the Server
-				break;
-			}
-		}
+	private static boolean Closed()
+	{
+		return  !frame.isVisible();
 	}
-
+	public static void setText(String msg) {
+		msg_TA.setText(msg_TA.getText() + "\n" + msg);
+	}
 	/* ************************** InitWindow_AfterStart ************************** */
-	static JTextField msg_TA;
+	static JTextArea msg_TA;
 	static JFrame login_frame;
 	public static void InitWindow_AfterStart()
 	{
 		login_frame = new JFrame();
-		login_frame.setTitle("T&O Chat: Login\r\n");
-		login_frame.setBounds(400, 400, 500, 500);
+		login_frame.setTitle("T&O SERVER");
+		login_frame.setBounds(400, 400, 505, 525);
 		login_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		login_frame.getContentPane().setLayout(null);
-
+		
+		msg_TA = new JTextArea("Server is ON!");
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(40, 40, 400, 400);
-		login_frame.getContentPane().add(scrollPane);
-		JTextArea msg_TA = new JTextArea();
-		scrollPane.setViewportView(msg_TA);
-		msg_TA.setLineWrap(true);
-		msg_TA.setText("Server is ON!");
+		scrollPane.setBounds(5, 5, 475, 475);
+
 		msg_TA.setFont(new Font("Courier New", Font.PLAIN, 20));
 		msg_TA.setBackground(Color.CYAN);
 		msg_TA.setEditable(false);
-		
+		msg_TA.setLineWrap(true);
+		login_frame.getContentPane().add(msg_TA);
 		ImageIcon icon = new ImageIcon("./img/icon.png"); // Set Icon to Chat
 		login_frame.setIconImage(icon.getImage());
 		login_frame.setVisible(true);
+		
+		scrollPane.setViewportView(msg_TA);
+		login_frame.getContentPane().add(scrollPane);
+
 	}
 	/* ************************** InitWindow_BeforeStart ************************** */
 	static JFrame frame;
@@ -153,8 +137,18 @@ public class Server {
 			}
 		});
 	}
-	private static boolean Closed()
-	{
-		return  !frame.isVisible();
+	/* ************************** Main ************************** */
+	public static void main(String[] args) throws InterruptedException {
+		InitWindow_BeforeStart();
+		while(true)
+		{
+			Thread.sleep(500);
+			if(Closed())
+			{
+				Server server = new Server(PORT); // Init Server with port PORT
+				server.startServer(); // Start running the Server
+				break;
+			}
+		}
 	}
 }

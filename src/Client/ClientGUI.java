@@ -163,7 +163,6 @@ public class ClientGUI {
 			msg = s_count.substring(1);
 			
 		}
-			System.err.println(msg);
 			String temp = allMsgFromallUsers.getText() + "\n" + msg;
 			allMsgFromallUsers.setText(temp);
 	}
