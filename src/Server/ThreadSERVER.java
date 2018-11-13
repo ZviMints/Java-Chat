@@ -100,8 +100,6 @@ public class ThreadSERVER implements Runnable {
 				if(input.hasNextLine())
 				{
 					String msg = input.nextLine();
-					Server.setText(msg);
-
 					if(msg.contains("@")) // Private msg
 					{
 						try {
