@@ -89,7 +89,7 @@ public class ThreadSERVER implements Runnable {
 		}
 		if(!LIST && !found)
 		{
-			Private(from,from,"--> Cant find \""+to+"\"",false);	
+			Private(from,from,"-> Cant find \""+to+"\"",false);	
 		}
 	}
 	/* ************************** Run ( SERVER THREAD ) ************************** */
@@ -98,6 +98,7 @@ public class ThreadSERVER implements Runnable {
 	public void run() {
 		try {
 			this.output = new PrintWriter(skt.getOutputStream(),false);
+			Broadcast(" -> ["+ name +"] Has Connected" + "\n");
 			input = new Scanner(skt.getInputStream());
 			while(skt.isConnected()) // There connection with the server the current CLIENT
 			{
@@ -123,7 +124,7 @@ public class ThreadSERVER implements Runnable {
 							System.out.println(msg);
 							int index_name = msg.indexOf("]");
 							String username_from = msg.substring(1,index_name);
-							String temp = "Error! Private Message are from the form '@<name>|<msg>'";
+							String temp = "Wrong Format! Try: '@<name>|<msg>'";
 							Private(username_from,username_from,temp,false);
 						}
 					}

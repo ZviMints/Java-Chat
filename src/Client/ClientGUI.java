@@ -135,7 +135,11 @@ public class ClientGUI {
 				allMsgFromallUsers = new JTextArea();
 				scrollPane.setViewportView(allMsgFromallUsers);
 				allMsgFromallUsers.setLineWrap(true);
-				allMsgFromallUsers.setText("    "+this.username+",Welcome To T&O Chat!\r\n\r\n   (*)To Write Private Message: \r\n        Write @<name>|<msg>\r\n\r\n   (*)To close the chat, press X\r\n             Enjoy! :)");
+				allMsgFromallUsers.setText(
+						 "   (*)To Write Private Message: \r\n"
+						+ "        Write @<name>|<msg>\r\n\r\n "
+						+ "  (*)To close the chat, press X\r\n"
+						+ " ____________________________________");
 				allMsgFromallUsers.setFont(new Font("Courier New", Font.PLAIN, 20));
 				allMsgFromallUsers.setBackground(Color.CYAN);
 				allMsgFromallUsers.setEditable(false);
