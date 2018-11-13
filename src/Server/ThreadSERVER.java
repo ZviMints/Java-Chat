@@ -144,7 +144,7 @@ public class ThreadSERVER implements Runnable {
 							System.out.println("Left Online:"+Server.count);
 							System.out.println("\""+ username +"\" Removed From Client List");
 							System.out.println("*****************");
-							Broadcast("<update>"+Server.count+" -> ["+ username +"] Has Disconnected" + "\n");
+							Broadcast("<update>"+Server.count+" -> ["+ username +"] Has Disconnected");
 							skt.close();
 						}
 						else if(msg.contains("<getnames>"))
