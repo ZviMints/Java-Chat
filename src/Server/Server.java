@@ -90,7 +90,7 @@ public class Server {
 	{
 		login_frame = new JFrame();
 		login_frame.setTitle("T&O SERVER");
-		login_frame.setBounds(400, 400, 505, 525);
+		login_frame.setBounds(400, 400, 505, 540);
 		login_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		login_frame.getContentPane().setLayout(null);
 		
