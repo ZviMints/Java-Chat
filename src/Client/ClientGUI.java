@@ -1,6 +1,7 @@
 package Client;
 import java.awt.EventQueue;
-
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime; 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -52,7 +53,7 @@ public class ClientGUI {
 	private void initialize() throws IOException {
 		frmToChatChat = new JFrame();
 		frmToChatChat.setTitle("T&O Chat: "+username+" Chat");
-		frmToChatChat.setBounds(100, 100, 504, 564);
+		frmToChatChat.setBounds(100, 100, 714, 564);
 		
 		frmToChatChat.addWindowListener(new WindowAdapter() {
 			  public void windowClosing(WindowEvent we) { // Closing the frame
@@ -87,10 +88,10 @@ public class ClientGUI {
 				threadCLIENT.addNextMessage(username+"<getnames>");       
 			}
 		});
-		btn_connected.setBounds(326, 16, 141, 29);
+		btn_connected.setBounds(536, 16, 141, 29);
 		frmToChatChat.getContentPane().add(btn_connected);
 		JButton btn_reset = new JButton("Clear");
-		btn_reset.setBounds(326, 55, 141, 29);
+		btn_reset.setBounds(536, 55, 141, 29);
 		btn_reset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) { // Reset has Pressed
 				allMsgFromallUsers.setText("");
@@ -99,13 +100,13 @@ public class ClientGUI {
 		frmToChatChat.getContentPane().add(btn_reset);
 
 		textArea_msg = new JTextArea();
-		textArea_msg.setBounds(15, 438, 356, 54);
+		textArea_msg.setBounds(15, 438, 566, 54);
 		textArea_msg.setFont(new Font("Courier New", Font.PLAIN, 20));
 		textArea_msg.setBackground(Color.MAGENTA);
 		frmToChatChat.getContentPane().add(textArea_msg);
 
 		JButton btn_send = new JButton("Send");
-		btn_send.setBounds(386, 438, 81, 54);
+		btn_send.setBounds(596, 438, 81, 54);
 		btn_send.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { // Send Button has Clicked
 				if(!textArea_msg.getText().trim().equals(""))
@@ -113,7 +114,7 @@ public class ClientGUI {
 					String info_username = getUsername();
 					String UserInput = textArea_msg.getText();
 
-					threadCLIENT.addNextMessage("["+ info_username +"]: " + UserInput);
+					threadCLIENT.addNextMessage("<"+getTime()+">"+"["+info_username +"]: " + UserInput);
 					textArea_msg.setText("");
 				}
 
@@ -129,21 +130,21 @@ public class ClientGUI {
 		frmToChatChat.getContentPane().add(btn_send);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(15, 95, 452, 327);
+		scrollPane.setBounds(15, 95, 662, 327);
 		frmToChatChat.getContentPane().add(scrollPane);
 		
 				allMsgFromallUsers = new JTextArea();
 				scrollPane.setViewportView(allMsgFromallUsers);
 				allMsgFromallUsers.setLineWrap(true);
 				allMsgFromallUsers.setText(
-						 "   (*)To Write Private Message: \r\n"
-						+ "        Write @<name>|<msg>\r\n\r "
-						+ " __________________________________");
+						 "             (*)To Write Private Message: \r\n                 Write @<name>|<msg>\r\n******************************************************");
 				allMsgFromallUsers.setFont(new Font("Courier New", Font.PLAIN, 20));
 				allMsgFromallUsers.setBackground(Color.CYAN);
 				allMsgFromallUsers.setEditable(false);
 	}
 
+	
+	
 	/* ************************** Setters and Getters ************************** */
 
 	private String getUsername() {
@@ -153,5 +154,11 @@ public class ClientGUI {
 		System.err.println(msg);
 		String temp = allMsgFromallUsers.getText() + "\n" + msg;
 		allMsgFromallUsers.setText(temp);
-	}		
+	}
+	public String getTime()
+	{
+		   DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
+		   LocalDateTime now = LocalDateTime.now();  
+		   return dtf.format(now);
+	}
 }

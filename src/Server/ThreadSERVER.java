@@ -113,17 +113,20 @@ public class ThreadSERVER implements Runnable {
 							int index_a = msg.indexOf("@");
 							int index_name = msg.indexOf("]");
 							int index_line = msg.indexOf("|");
+							int index_triangle = msg.indexOf(">");
+							String time = msg.substring(1,index_triangle);
 							String username_to = msg.substring(index_a+1,index_line);
-							String username_from = msg.substring(1,index_name);
+							String username_from = msg.substring(index_triangle+2,index_name);
 							String deliver = msg.substring(index_line+1);
 							System.out.println(username_to+","+username_from+","+deliver);
-							Private(username_to,username_from,"[Private Msg From "+username_from+"]: "+deliver,false);
+							Private(username_to,username_from,"<"+time+">"+"[Private From "+username_from+"]: "+deliver,false);
 						}
 						catch(Exception e)
 						{
 							System.out.println(msg);
 							int index_name = msg.indexOf("]");
-							String username_from = msg.substring(1,index_name);
+							int index_triangle = msg.indexOf(">");
+							String username_from = msg.substring(index_triangle+2,index_name);
 							String temp = "Wrong Format! Try: '@<name>|<msg>'";
 							Private(username_from,username_from,temp,false);
 						}
