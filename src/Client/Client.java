@@ -104,6 +104,7 @@ public class Client {
 		login_title.setBounds(260, 10, 204, 69);
 		login_button.setBounds(20, 60, 204, 69);
 		login_frame.setVisible(true);
+		login_frame.setResizable(false);
 
 		login_button.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {

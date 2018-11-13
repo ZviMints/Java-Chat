@@ -124,7 +124,8 @@ public class ClientGUI {
 			}
 		});
 		frmToChatChat.getContentPane().add(btn_send);
-		
+		frmToChatChat.setResizable(false);
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(15, 95, 662, 327);
 		frmToChatChat.getContentPane().add(scrollPane);

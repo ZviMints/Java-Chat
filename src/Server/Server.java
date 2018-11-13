@@ -5,6 +5,8 @@
 package Server;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -18,7 +20,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -117,6 +123,14 @@ public class Server {
 		return  !frame.isVisible();
 	}
 	public static void setText(String msg) {
+		if(msg.contains("<update>"))
+		{
+			if(count!=0)
+			lbl_user.setText("CLIENTS NAMES:"+getNames());
+			else
+			lbl_user.setText("CLIENTS NAMES: NULL");
+			lbl_number.setText("ONLINE:"+count);
+		}
 		msg_TA.setText(msg_TA.getText() + "\n" + msg);
 	}
 	public boolean ContainName(String name)
@@ -128,14 +142,27 @@ public class Server {
 		}
 		return false;
 	}
+	public static String getNames()
+	{
+		String s = "";
+		for(ThreadSERVER client : getClients())
+		{
+			if(s!="")
+				s+=",";
+			s = s + client.name;
+		}
+		return s;
+	}
 	/* ************************** InitWindow_AfterStart ************************** */
 	static JTextArea msg_TA;
 	static JFrame login_frame;
+	static JLabel lbl_user;
+	static JLabel lbl_number;
 	public static void InitWindow_AfterStart()
 	{
 		login_frame = new JFrame();
 		login_frame.setTitle("T&O SERVER");
-		login_frame.setBounds(400, 400, 505, 540);
+		login_frame.setBounds(400, 200, 490, 602);
 		login_frame.addWindowListener(new WindowAdapter() {
 			  public void windowClosing(WindowEvent we) { 
 				for(ThreadSERVER client : getClients())
@@ -145,11 +172,36 @@ public class Server {
 			    System.exit(0);
 			  }
 			});
+		
+
 		login_frame.getContentPane().setLayout(null);
 
+
+
+		lbl_number = new JLabel("ONLINE:"+count);
+		lbl_number.setBounds(2, 480, 105, 20);
+		lbl_number.setFont(new Font("Arial", Font.BOLD, 16));
+
+		login_frame.getContentPane().add(lbl_number);
+		
+		lbl_user = new JLabel("CLIENTS NAMES: NULL");
+		lbl_user.setBounds(2, 500, 500, 20);
+		lbl_user.setFont(new Font("Arial", Font.BOLD, 16));
+		login_frame.getContentPane().add(lbl_user);
+		
+		JButton btnNewButton_1 = new JButton("Clean");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				msg_TA.setText("");
+			}
+		});
+		btnNewButton_1.setBounds(2, 530, 479, 29);
+		login_frame.getContentPane().add(btnNewButton_1);
+		
+		
 		msg_TA = new JTextArea("Server is ON!");
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(5, 5, 475, 475);
+		scrollPane.setBounds(5, 25, 475, 450);
 
 		msg_TA.setFont(new Font("Courier New", Font.PLAIN, 20));
 		msg_TA.setBackground(Color.DARK_GRAY);
@@ -159,8 +211,13 @@ public class Server {
 		login_frame.getContentPane().add(msg_TA);
 		ImageIcon icon = new ImageIcon("./img/icon.png"); // Set Icon to Chat
 		login_frame.setIconImage(icon.getImage());
+		
+		JLabel lbl_host = new JLabel("The server is listening on: "+myServer.getInetAddress()+":"+myServer.getLocalPort());
+		lbl_host.setBounds(2, 2, 500, 20);
+		lbl_host.setFont(new Font("Arial", Font.BOLD, 16));
+		login_frame.add(lbl_host);
+		login_frame.setResizable(false);
 		login_frame.setVisible(true);
-
 		scrollPane.setViewportView(msg_TA);
 		login_frame.getContentPane().add(scrollPane);
 
@@ -169,14 +226,15 @@ public class Server {
 	static JFrame frame;
 	public static void InitWindow_BeforeStart() {
 		frame = new JFrame("Start \"T&O\" Server");
-		frame.setBounds(100,100,500,200);
+		frame.setBounds(100,100,482,160);
 		frame.setVisible(true);
 		frame.addWindowListener(new WindowAdapter() {
 			  public void windowClosing(WindowEvent we) { 
 			    System.exit(0);
 			  }
 			});
-		
+		frame.setResizable(false);
+
 		ImageIcon icon = new ImageIcon("./img/icon.png"); // Set Icon to Chat
 		frame.setIconImage(icon.getImage());
 
