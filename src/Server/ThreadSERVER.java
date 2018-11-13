@@ -98,7 +98,7 @@ public class ThreadSERVER implements Runnable {
 	public void run() {
 		try {
 			this.output = new PrintWriter(skt.getOutputStream(),false);
-			Broadcast(" -> ["+ name +"] Has Connected" + "\n");
+			Broadcast(" -> ["+ name +"] Has Connected");
 			input = new Scanner(skt.getInputStream());
 			while(skt.isConnected()) // There connection with the server the current CLIENT
 			{

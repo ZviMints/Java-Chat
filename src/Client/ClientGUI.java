@@ -137,9 +137,8 @@ public class ClientGUI {
 				allMsgFromallUsers.setLineWrap(true);
 				allMsgFromallUsers.setText(
 						 "   (*)To Write Private Message: \r\n"
-						+ "        Write @<name>|<msg>\r\n\r\n "
-						+ "  (*)To close the chat, press X\r\n"
-						+ " ____________________________________");
+						+ "        Write @<name>|<msg>\r\n\r "
+						+ " __________________________________");
 				allMsgFromallUsers.setFont(new Font("Courier New", Font.PLAIN, 20));
 				allMsgFromallUsers.setBackground(Color.CYAN);
 				allMsgFromallUsers.setEditable(false);
