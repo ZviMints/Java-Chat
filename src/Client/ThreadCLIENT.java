@@ -46,7 +46,7 @@ public class ThreadCLIENT implements Runnable {
 		while(!exit)
 		{
 			try {
-				gui = new ClientGUI(username,""+skt.getLocalAddress(),""+skt.getRemoteSocketAddress(), skt, this);		
+				gui = new ClientGUI(username,""+skt.getLocalAddress(),""+skt.getRemoteSocketAddress(),this);		
 				PrintWriter output = new PrintWriter(skt.getOutputStream(),false);
 				InputStream input = skt.getInputStream();
 				Scanner ClientIN = new Scanner(input); 

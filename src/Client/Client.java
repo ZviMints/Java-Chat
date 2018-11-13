@@ -99,10 +99,10 @@ public class Client {
 
 		login_button.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				if(txtEnterNameHere.getText().contains(" ")) // remove whitespaces
+				if(txtEnterNameHere.getText().contains(" ") || txtEnterNameHere.getText().trim().equals("")) // remove whitespaces
 				{
 					JOptionPane.showMessageDialog(null, "Invalid name! \n "
-							+ "the name contain spaces"); 
+							+ "the name contain spaces or empty"); 
 				}
 //				else if(AlredyInUse(txtEnterNameHere.getText())) // if name alredy in use
 //				{

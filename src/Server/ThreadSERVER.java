@@ -98,7 +98,7 @@ public class ThreadSERVER implements Runnable {
 	public void run() {
 		try {
 			this.output = new PrintWriter(skt.getOutputStream(),false);
-			Broadcast(" -> ["+ name +"] Has Connected");
+			Broadcast("<update>"+Server.count+" -> ["+ name +"] Has Connected");
 			input = new Scanner(skt.getInputStream());
 			while(skt.isConnected()) // There connection with the server the current CLIENT
 			{
@@ -144,7 +144,7 @@ public class ThreadSERVER implements Runnable {
 							System.out.println("Left Online:"+Server.count);
 							System.out.println("\""+ username +"\" Removed From Client List");
 							System.out.println("*****************");
-							Broadcast(" -> ["+ username +"] Has Disconnected" + "\n");
+							Broadcast("<update>"+Server.count+" -> ["+ username +"] Has Disconnected" + "\n");
 							skt.close();
 						}
 						else if(msg.contains("<getnames>"))

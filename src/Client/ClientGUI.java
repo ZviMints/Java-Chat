@@ -1,5 +1,4 @@
 package Client;
-import java.awt.EventQueue;
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime; 
 import javax.swing.JFrame;
@@ -11,12 +10,9 @@ import javax.swing.JTextArea;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
@@ -28,8 +24,9 @@ public class ClientGUI {
 	private String info_Server;
 	private JTextArea allMsgFromallUsers; // The Big Msg from all users
 	private JTextArea textArea_msg; // What User Type
-	private Socket skt;
+	private int count = 1;
 	private ThreadCLIENT threadCLIENT;
+	private JLabel online_lbl;
 	/**
 	 * Create the application.
 	 * @param skt 
@@ -37,11 +34,10 @@ public class ClientGUI {
 	 * @throws IOException 
 	 */
 	
-	public ClientGUI(String info_username,String info_localport, String info_Server, Socket skt, ThreadCLIENT threadCLIENT ) throws IOException {	
+	public ClientGUI(String info_username,String info_localport, String info_Server, ThreadCLIENT threadCLIENT ) throws IOException {	
 		this.username = info_username;
 		this.info_localport = info_localport;
 		this.info_Server = info_Server;
-		this.skt = skt;
 		initialize();
 		this.frmToChatChat.setVisible(true);
 		this.threadCLIENT = threadCLIENT;
@@ -53,7 +49,7 @@ public class ClientGUI {
 	private void initialize() throws IOException {
 		frmToChatChat = new JFrame();
 		frmToChatChat.setTitle("T&O Chat: "+username+" Chat");
-		frmToChatChat.setBounds(100, 100, 714, 564);
+		frmToChatChat.setBounds(100, 100, 714, 591);
 		
 		frmToChatChat.addWindowListener(new WindowAdapter() {
 			  public void windowClosing(WindowEvent we) { // Closing the frame
@@ -100,13 +96,13 @@ public class ClientGUI {
 		frmToChatChat.getContentPane().add(btn_reset);
 
 		textArea_msg = new JTextArea();
-		textArea_msg.setBounds(15, 438, 566, 54);
+		textArea_msg.setBounds(15, 465, 566, 54);
 		textArea_msg.setFont(new Font("Courier New", Font.PLAIN, 20));
 		textArea_msg.setBackground(Color.MAGENTA);
 		frmToChatChat.getContentPane().add(textArea_msg);
 
 		JButton btn_send = new JButton("Send");
-		btn_send.setBounds(596, 438, 81, 54);
+		btn_send.setBounds(596, 465, 81, 54);
 		btn_send.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { // Send Button has Clicked
 				if(!textArea_msg.getText().trim().equals(""))
@@ -141,19 +137,35 @@ public class ClientGUI {
 				allMsgFromallUsers.setFont(new Font("Courier New", Font.PLAIN, 20));
 				allMsgFromallUsers.setBackground(Color.CYAN);
 				allMsgFromallUsers.setEditable(false);
+				
+				online_lbl = new JLabel("<"+getCount()+"> People are online to chat right now.");
+				online_lbl.setFont(new Font("Arial", Font.ITALIC, 17));
+				online_lbl.setBounds(15, 429, 366, 20);
+				frmToChatChat.getContentPane().add(online_lbl);
 	}
 
 	
 	
 	/* ************************** Setters and Getters ************************** */
-
+	private int getCount()
+	{
+		return count;
+	}
 	private String getUsername() {
 		return this.username;
 	}
 	public void setNewMsg(String msg) {
-		System.err.println(msg);
-		String temp = allMsgFromallUsers.getText() + "\n" + msg;
-		allMsgFromallUsers.setText(temp);
+		if(msg.contains("<update>"))
+		{
+			String s_count = msg.replaceAll("<update>", "");
+			count = Integer.parseInt(s_count.substring(0, 1));	
+			online_lbl.setText("<"+count+"> People are online to chat right now.");
+			msg = s_count.substring(1);
+			
+		}
+			System.err.println(msg);
+			String temp = allMsgFromallUsers.getText() + "\n" + msg;
+			allMsgFromallUsers.setText(temp);
 	}
 	public String getTime()
 	{
