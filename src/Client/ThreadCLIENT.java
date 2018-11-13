@@ -65,7 +65,6 @@ public class ThreadCLIENT implements Runnable {
 						output.println(msgtodeliever);
 						output.flush();
 					}
-
 				}
 			}	  
 			catch(Exception e)

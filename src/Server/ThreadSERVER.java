@@ -67,7 +67,8 @@ public class ThreadSERVER implements Runnable {
 		}
 	}
 	/* ************************** Private ************************** */
-	public void Private(String to,String from, String message, boolean LIST) { // LIST IS FOR SHOWING WHO ONLINE
+	public void Private(String to, String from,String message, boolean LIST) { // LIST IS FOR SHOWING WHO ONLINE
+		boolean found = false;
 		for(ThreadSERVER client : myServer.getClients()) 
 		{
 			if(client.name.equals(to))
@@ -75,8 +76,9 @@ public class ThreadSERVER implements Runnable {
 				PrintWriter pw_oftheclient = client.getWriter();
 				if(!LIST)
 				{
-				pw_oftheclient.write("[Private Msg From "+from+"]: "+message + "\n");
+				pw_oftheclient.write(message + "\n");
 				pw_oftheclient.flush();
+				found = true;
 				}
 				else
 				{
@@ -84,6 +86,10 @@ public class ThreadSERVER implements Runnable {
 					pw_oftheclient.flush();	
 				}
 			}
+		}
+		if(!LIST && !found)
+		{
+			Private(from,from,"--> Cant find \""+to+"\"",false);	
 		}
 	}
 	/* ************************** Run ( SERVER THREAD ) ************************** */
@@ -101,16 +107,25 @@ public class ThreadSERVER implements Runnable {
 					System.out.println(msg); // Print all msg
 					if(msg.contains("@")) // Private msg
 					{
-						System.out.println(msg);
-						// MUST BE OF THE FORM @<name>|<msg>
-						int index_a = msg.indexOf("@");
-						int index_name = msg.indexOf("]");
-						int index_line = msg.indexOf("|");
-						String username_to = msg.substring(index_a+1,index_line);
-						String username_from = msg.substring(1,index_name);
-						String deliver = msg.substring(index_line+1);
-						System.out.println(username_to+","+username_from+","+deliver);
-						Private(username_to,username_from,deliver,false);
+						try {
+							// MUST BE OF THE FORM @<name>|<msg>
+							int index_a = msg.indexOf("@");
+							int index_name = msg.indexOf("]");
+							int index_line = msg.indexOf("|");
+							String username_to = msg.substring(index_a+1,index_line);
+							String username_from = msg.substring(1,index_name);
+							String deliver = msg.substring(index_line+1);
+							System.out.println(username_to+","+username_from+","+deliver);
+							Private(username_to,username_from,"[Private Msg From "+username_from+"]: "+deliver,false);
+						}
+						catch(Exception e)
+						{
+							System.out.println(msg);
+							int index_name = msg.indexOf("]");
+							String username_from = msg.substring(1,index_name);
+							String temp = "Error! Private Message are from the form '@<name>|<msg>'";
+							Private(username_from,username_from,temp,false);
+						}
 					}
 					else
 					{

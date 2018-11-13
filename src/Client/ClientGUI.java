@@ -52,7 +52,7 @@ public class ClientGUI {
 	private void initialize() throws IOException {
 		frmToChatChat = new JFrame();
 		frmToChatChat.setTitle("T&O Chat: "+username+" Chat");
-		frmToChatChat.setBounds(100, 100, 454, 501);
+		frmToChatChat.setBounds(100, 100, 504, 564);
 		
 		frmToChatChat.addWindowListener(new WindowAdapter() {
 			  public void windowClosing(WindowEvent we) { // Closing the frame
@@ -87,10 +87,10 @@ public class ClientGUI {
 				threadCLIENT.addNextMessage(username+"<getnames>");       
 			}
 		});
-		btn_connected.setBounds(272, 16, 141, 29);
+		btn_connected.setBounds(326, 16, 141, 29);
 		frmToChatChat.getContentPane().add(btn_connected);
 		JButton btn_reset = new JButton("Clear");
-		btn_reset.setBounds(272, 55, 141, 29);
+		btn_reset.setBounds(326, 55, 141, 29);
 		btn_reset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) { // Reset has Pressed
 				allMsgFromallUsers.setText("");
@@ -99,13 +99,13 @@ public class ClientGUI {
 		frmToChatChat.getContentPane().add(btn_reset);
 
 		textArea_msg = new JTextArea();
-		textArea_msg.setBounds(15, 375, 306, 54);
+		textArea_msg.setBounds(15, 438, 356, 54);
 		textArea_msg.setFont(new Font("Courier New", Font.PLAIN, 20));
 		textArea_msg.setBackground(Color.MAGENTA);
 		frmToChatChat.getContentPane().add(textArea_msg);
 
 		JButton btn_send = new JButton("Send");
-		btn_send.setBounds(332, 375, 81, 54);
+		btn_send.setBounds(386, 438, 81, 54);
 		btn_send.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { // Send Button has Clicked
 				if(!textArea_msg.getText().trim().equals(""))
@@ -129,13 +129,13 @@ public class ClientGUI {
 		frmToChatChat.getContentPane().add(btn_send);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(15, 95, 398, 235);
+		scrollPane.setBounds(15, 95, 452, 327);
 		frmToChatChat.getContentPane().add(scrollPane);
 		
 				allMsgFromallUsers = new JTextArea();
 				scrollPane.setViewportView(allMsgFromallUsers);
 				allMsgFromallUsers.setLineWrap(true);
-				allMsgFromallUsers.setText(this.username+",Welcome To T&O Chat!\r\n(*)To Write Private Message: \r\n  Write @<name>|<msg>\r\n(*)To close the chat, press X\r\nEnjoy! :)");
+				allMsgFromallUsers.setText("    "+this.username+",Welcome To T&O Chat!\r\n\r\n   (*)To Write Private Message: \r\n        Write @<name>|<msg>\r\n\r\n   (*)To close the chat, press X\r\n             Enjoy! :)");
 				allMsgFromallUsers.setFont(new Font("Courier New", Font.PLAIN, 20));
 				allMsgFromallUsers.setBackground(Color.CYAN);
 				allMsgFromallUsers.setEditable(false);
