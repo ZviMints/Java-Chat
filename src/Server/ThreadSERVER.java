@@ -5,42 +5,56 @@
 package Server;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class ThreadSERVER implements Runnable {
 	private Socket skt;
 	private PrintWriter output;
 	private Scanner input;
-	private Server myServer;
 	public String name = "";
 
 	/* ************************** Constructor ************************** */
-
+	/**
+	 * Construct Thread Server
+	 * @param server is the current server
+	 * @param skt is the current socket
+	 */
 	public ThreadSERVER(Server server, Socket skt) {
-		this.myServer = server;
 		this.skt = skt;
 	}
 
 	/* ************************** Setters And Getters ************************** */
+	/**
+	 * Getters for PrintWriter
+	 * @return PrintWriter of currect socket
+	 */
 	private PrintWriter getWriter()
 	{
 		return this.output;
 	}
+	/**
+	 * This method is responsible to return ThreadServer Obj by Name
+	 * @param name is the client name
+	 * @return  ThreadServer Thread
+	 */
 	private ThreadSERVER GetClientByName(String name)
 	{
 		ThreadSERVER ans = null;
-		for(ThreadSERVER client : myServer.getClients()) 
+		for(ThreadSERVER client : Server.getClients()) 
 		{
 			if(name.equals(client.name))
 				ans = client;
 		}
 		return ans;
 	}
+	/**
+	 * This method is responsible to send back all the names in the client list
+	 * @return all names in client list in this form "name_1,name_2,name_3.."
+	 */
 	public String getNames()
 	{
 		String s = "";
-		for(ThreadSERVER client : myServer.getClients())
+		for(ThreadSERVER client : Server.getClients())
 		{
 			if(s!="")
 				s+=",";
@@ -50,10 +64,14 @@ public class ThreadSERVER implements Runnable {
 	}
 
 	/* ************************** Broadcast ************************** */
+	/**
+	 * This method send message from server to all clients in Server client list
+	 * @param message is the message we want to deliver
+	 */
 	public void Broadcast(String message){
 		Server.setText(message);
 
-		for(ThreadSERVER client : myServer.getClients())
+		for(ThreadSERVER client : Server.getClients())
 		{
 			PrintWriter pw_oftheclient = client.getWriter();
 			pw_oftheclient.write(message + "\n");
@@ -61,9 +79,16 @@ public class ThreadSERVER implements Runnable {
 		}
 	}
 	/* ************************** Private ************************** */
+	/**
+	 * This method send PRIVATE message to user
+	 * @param to is the name of the client that need to get message
+	 * @param from is the name of the client that send the message
+	 * @param message is the message we want to deliver
+	 * @param LIST is true if we want to send Who's online message and false if its regular private message
+	 */
 	public void Private(String to, String from,String message, boolean LIST) { // LIST IS FOR SHOWING WHO ONLINE
 		boolean found = false;
-		for(ThreadSERVER client : myServer.getClients()) 
+		for(ThreadSERVER client : Server.getClients()) 
 		{
 			if(client.name.equals(to))
 			{
@@ -100,7 +125,7 @@ public class ThreadSERVER implements Runnable {
 					if(input.hasNextLine())
 					{
 						String msg = input.nextLine();
-						if(msg.contains("@")) // Private msg
+						if(msg.contains("@")) // Private message
 						{
 							try {
 								// MUST BE OF THE FORM @<name>|<msg>
@@ -115,7 +140,8 @@ public class ThreadSERVER implements Runnable {
 								System.out.println(username_to+","+username_from+","+deliver);
 								Private(username_to,username_from,"<"+time+">"+"[Private From "+username_from+"]: "+deliver,false);
 							}
-							catch(Exception e)
+							catch(Exception e) // Wrong format of private message
+							                   // ex . @message or other.
 							{
 								int index_name = msg.indexOf("]");
 								int index_triangle = msg.indexOf(">");
@@ -124,13 +150,13 @@ public class ThreadSERVER implements Runnable {
 								Private(username_from,username_from,temp,false);
 							}
 						}
-						else
+						else // It's not a private message
 						{
-							if(msg.contains("<close>"))
+							if(msg.contains("<close>")) // Closing a Thread
 							{
 								int index_triangle = msg.indexOf("<");
 								String username = msg.substring(0,index_triangle);
-								myServer.getClients().remove(GetClientByName(username));
+								Server.getClients().remove(GetClientByName(username));
 								Server.count--;
 								Server.setText("*****************" + "\n" +
 										"Closing \""+username+"\"..." + "\n" +
@@ -140,7 +166,7 @@ public class ThreadSERVER implements Runnable {
 								Broadcast("<update>"+Server.count+" -> ["+ username +"] Has Disconnected");
 								skt.close();
 							}
-							else if(msg.contains("<getnames>"))
+							else if(msg.contains("<getnames>")) // Send back the names that online right now
 							{
 								int index_triangle = msg.indexOf("<");
 								String username = msg.substring(0,index_triangle);

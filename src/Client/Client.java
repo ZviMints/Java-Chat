@@ -33,18 +33,22 @@ public class Client {
 	private String username;
 	private String serverhost;
 	private int serverport;
-
-
 	/* ************************** Setters and Getters ************************** */
-
+/**
+ * Construct of the Client class
+ * @param clientName is the current client name
+ * @param host is the current host, ex "localhost"
+ * @param port is the port server
+ */
 	public Client(String clientName, String host, int port) {
 		this.username = clientName;
 		this.serverhost = host;
 		this.serverport = port;
 	}
-
 	/* ************************** Methods ************************** */
-
+	/**
+	 * Init the client after pressing "Login"
+	 */
 	private void startClient()
 	{
 		try {
@@ -65,17 +69,23 @@ public class Client {
 			System.err.println("Connection error!, Server Maybe Close");
 		}
 	}
-
 	/* ************************** InitWindow Setters and Getters ************************** */
+	/**
+	 * This method is responsible to get Text from TextField 
+	 * @return the name
+	 */
 	private static String getNameFromForm()
 	{
 		return txtEnterNameHere.getText();
 	}
+	/**
+	 * This method checks whether the server window is open or closed
+	 * @return true if frame is close, false if else.
+	 */
 	private static boolean Closed()
 	{
 		return  !login_frame.isVisible();
 	}
-
 	/* ************************** InitWindow ************************** */
 	static JTextField txtEnterNameHere;
 	static JFrame login_frame;
@@ -105,7 +115,6 @@ public class Client {
 		login_button.setBounds(20, 60, 204, 69);
 		login_frame.setVisible(true);
 		login_frame.setResizable(false);
-
 		login_button.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if(txtEnterNameHere.getText().contains(" ") || txtEnterNameHere.getText().trim().equals("")) // remove whitespaces
