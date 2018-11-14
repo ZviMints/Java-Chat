@@ -90,6 +90,8 @@ public class Client {
 	static JTextField txtEnterNameHere;
 	static JFrame login_frame;
 	static boolean AlredyInUse = false;
+	private static JTextField tf_address;
+	private static JTextField tf_port;
 	public static void InitWindow()
 	{
 		login_frame = new JFrame();
@@ -108,11 +110,35 @@ public class Client {
 		login_frame.setIconImage(icon.getImage());
 		JLabel login_title = new JLabel(new ImageIcon("./img/login_title.png"));
 		JLabel login_button = new JLabel(new ImageIcon("./img/login.png"));
+		
+		JLabel lbl_number = new JLabel("host:");
+		lbl_number.setBounds(10, 7, 105, 20);
+		lbl_number.setFont(new Font("Arial", Font.BOLD, 16));
+		login_frame.getContentPane().add(lbl_number);
 
-		login_frame.add(login_button);
-		login_frame.add(login_title);
+		JLabel lbl_user = new JLabel("port:");
+		lbl_user.setBounds(10, 29, 500, 20);
+		lbl_user.setFont(new Font("Arial", Font.BOLD, 16));
+		login_frame.getContentPane().add(lbl_user);
+		
+		
+		
+		login_frame.getContentPane().add(login_button);
+		login_frame.getContentPane().add(login_title);
 		login_title.setBounds(260, 10, 204, 69);
 		login_button.setBounds(20, 60, 204, 69);
+		
+		tf_address = new JTextField();
+		tf_address.setText("localhost");
+		tf_address.setBounds(60, 5, 111, 23);
+		login_frame.getContentPane().add(tf_address);
+		tf_address.setColumns(10);
+		
+		tf_port = new JTextField();
+		tf_port.setText("9999\r\n");
+		tf_port.setBounds(60, 26, 56, 26);
+		login_frame.getContentPane().add(tf_port);
+		tf_port.setColumns(10);
 		login_frame.setVisible(true);
 		login_frame.setResizable(false);
 		login_button.addMouseListener(new MouseAdapter() {
@@ -150,8 +176,10 @@ public class Client {
 					}
 					catch (IOException e1) {
 						if(!ServerOpen)
-							JOptionPane.showMessageDialog(null, "Sorry, \n "
-									+ "The Server is CLOSE"); 
+							JOptionPane.showMessageDialog(null, "Error, \n "
+									+ "Can't connect to the Server on:" + "\n"
+									+"host:"+tf_address.getText()+"\n"
+											+ "port:"+tf_port.getText()+"."); 
 					}	
 				}
 			}
