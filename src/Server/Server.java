@@ -1,5 +1,6 @@
 /**
  * This class represent Server
+
  * @author Tzvi Mints And Or Abuhazira
  */
 package Server;
@@ -32,7 +33,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class Server {
-	private static final int PORT = 9999; // Init the PORT for the server
+	private static int PORT ; // Init the PORT for the server
 	String currnet_username = ""; // for print Hello to server
 	private static List<ThreadSERVER> clients; // list of all clients 
 	private static ServerSocket myServer; //
@@ -61,8 +62,8 @@ public class Server {
 			try {
 				Socket skt = myServer.accept();
 				while(skt.isConnected()) //  Checks if there is such a name in the system,
-					                     // if NO, continues the process, 
-					                     // if YES, will throw an error "the name in use" in the client window 
+					// if NO, continues the process, 
+					// if YES, will throw an error "the name in use" in the client window 
 				{	
 					PrintWriter out = new PrintWriter(skt.getOutputStream(), true);
 					BufferedReader in = new BufferedReader(new InputStreamReader(skt.getInputStream()));
@@ -89,6 +90,9 @@ public class Server {
 				try {
 					Socket skt = myServer.accept();
 					// Get username of new connection
+					//					String name=(new Scanner ( skt.getInputStream() )).nextLine();
+					//					System.out.println(name);
+					//					if(hasName(name)){
 					this.currnet_username = (new Scanner ( skt.getInputStream() )).nextLine();
 					setText("New Client: \"" + this.currnet_username + "\"" + "\n"
 							+ "Host:" + skt.getInetAddress().getHostAddress() + "\n"
@@ -100,11 +104,25 @@ public class Server {
 					count++; // inc online users
 					Thread thread = new Thread(client); // Made a new Thread called thread
 					thread.start(); // Now thread.run will work
-				} catch (IOException e) {
+				}
+				catch (IOException e) {
 					System.err.println("Fail on accept: "+PORT);
 				}
 			}
 		}
+
+
+
+	}
+	public static boolean hasName(String s) {
+		for(ThreadSERVER client : clients)
+		{
+			if(client.name.equals(s)) {
+				System.out.println(client.name);
+				return false;
+			}
+		}
+		return true;
 	}
 	/* ************************** Setters And Getters ************************** */
 	public static void print(String s)
@@ -126,9 +144,9 @@ public class Server {
 		if(msg.contains("<update>"))
 		{
 			if(count!=0)
-			lbl_user.setText("CLIENTS NAMES:"+getNames());
+				lbl_user.setText("CLIENTS NAMES:"+getNames());
 			else
-			lbl_user.setText("CLIENTS NAMES: NULL");
+				lbl_user.setText("CLIENTS NAMES: NULL");
 			lbl_number.setText("ONLINE:"+count);
 		}
 		msg_TA.setText(msg_TA.getText() + "\n" + msg);
@@ -164,15 +182,15 @@ public class Server {
 		login_frame.setTitle("T&O SERVER");
 		login_frame.setBounds(400, 200, 490, 602);
 		login_frame.addWindowListener(new WindowAdapter() {
-			  public void windowClosing(WindowEvent we) { 
+			public void windowClosing(WindowEvent we) { 
 				for(ThreadSERVER client : getClients())
 				{
 					client.Broadcast("<closeme>");
 				}
-			    System.exit(0);
-			  }
-			});
-		
+				System.exit(0);
+			}
+		});
+
 
 		login_frame.getContentPane().setLayout(null);
 
@@ -183,12 +201,12 @@ public class Server {
 		lbl_number.setFont(new Font("Arial", Font.BOLD, 16));
 
 		login_frame.getContentPane().add(lbl_number);
-		
+
 		lbl_user = new JLabel("CLIENTS NAMES: NULL");
 		lbl_user.setBounds(2, 500, 500, 20);
 		lbl_user.setFont(new Font("Arial", Font.BOLD, 16));
 		login_frame.getContentPane().add(lbl_user);
-		
+
 		JButton btnNewButton_1 = new JButton("Clean");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -197,8 +215,8 @@ public class Server {
 		});
 		btnNewButton_1.setBounds(2, 530, 479, 29);
 		login_frame.getContentPane().add(btnNewButton_1);
-		
-		
+
+
 		msg_TA = new JTextArea("Server is ON!");
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(5, 25, 475, 450);
@@ -211,7 +229,7 @@ public class Server {
 		login_frame.getContentPane().add(msg_TA);
 		ImageIcon icon = new ImageIcon("./img/icon.png"); // Set Icon to Chat
 		login_frame.setIconImage(icon.getImage());
-		
+
 		JLabel lbl_host = new JLabel("The server is listening on: "+myServer.getInetAddress()+":"+myServer.getLocalPort());
 		lbl_host.setBounds(2, 2, 500, 20);
 		lbl_host.setFont(new Font("Arial", Font.BOLD, 16));
@@ -223,18 +241,38 @@ public class Server {
 
 	}
 	/* ************************** InitWindow_BeforeStart ************************** */
+	static JTextField txtEnterPORT;
+	static JLabel PORT1;
 	static JFrame frame;
 	public static void InitWindow_BeforeStart() {
-		frame = new JFrame("Start \"T&O\" Server");
-		frame.setBounds(100,100,482,160);
-		frame.setVisible(true);
-		frame.addWindowListener(new WindowAdapter() {
-			  public void windowClosing(WindowEvent we) { 
-			    System.exit(0);
-			  }
-			});
-		frame.setResizable(false);
-
+//		frame = new JFrame("Start \"T&O\" Server");
+//		frame.setBounds(100,100,482,160);
+//		frame.addWindowListener(new WindowAdapter() {
+//			public void windowClosing(WindowEvent we) { 
+//				System.exit(0);
+//			}
+//		});
+	
+		frame = new JFrame();
+		frame.setTitle("T&O Chat: Login\r\n");
+		frame.setBounds(100, 100, 522, 188);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		// enter PORT number
+		txtEnterPORT = new JTextField();
+		txtEnterPORT.setText("9999");
+		txtEnterPORT.setFont(new Font("Courier New", Font.PLAIN, 20));
+		txtEnterPORT.setBounds(80,50,120,20);
+		txtEnterPORT.setColumns(10);
+		
+		frame.add(txtEnterPORT);
+		
+		PORT1= new JLabel("PORT");
+		PORT1.setBounds(20, 50, 150, 20);
+		PORT1.setFont(new Font("Courier New", Font.PLAIN, 20));
+		frame.add(PORT1);
+		
 		ImageIcon icon = new ImageIcon("./img/icon.png"); // Set Icon to Chat
 		frame.setIconImage(icon.getImage());
 
@@ -242,17 +280,19 @@ public class Server {
 		JLabel start = new JLabel(new ImageIcon("./img/start.png"));
 		start.setVisible(true);
 		frame.add(start);
-		start.setBounds(150, 40, 201, 49);
+		start.setBounds(250, 40, 201, 49);
 
 		// On Click "Start Server"
 		start.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				// Close the last frame	
-
+				PORT=Integer.parseInt(txtEnterPORT.getText());
 				frame.setVisible(false);
 				frame.dispose();
 			}
 		});
+		frame.setVisible(true);
+		frame.setResizable(false);
 	}
 	/* ************************** Main ************************** */
 	public static void main(String[] args) throws InterruptedException {

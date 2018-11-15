@@ -28,11 +28,13 @@ import javax.swing.JTextField;
 import Server.ThreadSERVER;
 
 public class Client {
-	private static final String host = "localhost";
-	private static final int PORT = 9999;
+	
+	private static String host ;
+	private static int PORT ;
 	private String username;
 	private String serverhost;
 	private int serverport;
+	
 
 
 	/* ************************** Setters and Getters ************************** */
@@ -78,6 +80,10 @@ public class Client {
 
 	/* ************************** InitWindow ************************** */
 	static JTextField txtEnterNameHere;
+	static JTextField txtEnterIP;
+	static JTextField txtEnterPORT;
+	static JLabel PORT1;
+	static JLabel IP1;
 	static JFrame login_frame;
 	static boolean AlredyInUse = false;
 	public static void InitWindow()
@@ -87,12 +93,43 @@ public class Client {
 		login_frame.setBounds(100, 100, 522, 188);
 		login_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		login_frame.getContentPane().setLayout(null);
+		
 
+		// enter IP address
+		txtEnterIP = new JTextField();
+		txtEnterIP.setText("localhost");
+		txtEnterIP.setFont(new Font("Courier New", Font.PLAIN, 20));
+		txtEnterIP.setBounds(65, 5, 120,20);
+		txtEnterIP.setColumns(10);
+		
+		
+		IP1= new JLabel("IP");
+		IP1.setBounds(20, 5, 150, 20);
+		
+		// enter PORT number
+		txtEnterPORT = new JTextField();
+		txtEnterPORT.setText("9999");
+		txtEnterPORT.setFont(new Font("Courier New", Font.PLAIN, 20));
+		txtEnterPORT.setBounds(65, 30, 120,20);
+		txtEnterPORT.setColumns(10);
+		
+		PORT1= new JLabel("PORT");
+		PORT1.setBounds(20, 30, 150, 20);
+		
+		// enter user name
 		txtEnterNameHere = new JTextField();
 		txtEnterNameHere.setText("");
 		txtEnterNameHere.setFont(new Font("Courier New", Font.PLAIN, 20));
 		txtEnterNameHere.setBounds(230, 67, 254, 49);
+		
+		
 		login_frame.getContentPane().add(txtEnterNameHere);
+		login_frame.getContentPane().add(txtEnterPORT);
+		login_frame.getContentPane().add(txtEnterIP);
+		login_frame.add(IP1);
+		login_frame.add(PORT1);
+		
+		
 		txtEnterNameHere.setColumns(10);
 		ImageIcon icon = new ImageIcon("./img/icon.png"); // Set Icon to Chat
 		login_frame.setIconImage(icon.getImage());
@@ -117,6 +154,8 @@ public class Client {
 				{
 					boolean ServerOpen = false;
 					try {
+						host=txtEnterIP.getText();
+						PORT=Integer.parseInt(txtEnterPORT.getText());
 						Socket skt = new Socket(host, PORT);
 						ServerOpen = true;
 						PrintWriter out = new PrintWriter(skt.getOutputStream(), true);
@@ -153,6 +192,7 @@ public class Client {
 	public static void main(String[] args) throws InterruptedException
 	{
 		InitWindow();
+
 		while(true)
 		{
 			Thread.sleep(500);
