@@ -144,9 +144,6 @@ public class ClientGUI {
 				online_lbl.setBounds(15, 429, 366, 20);
 				frmToChatChat.getContentPane().add(online_lbl);
 	}
-
-	
-	
 	/* ************************** Setters and Getters ************************** */
 	private int getCount()
 	{

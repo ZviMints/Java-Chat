@@ -21,9 +21,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -89,11 +86,8 @@ public class Server {
 			{
 				try {
 					Socket skt = myServer.accept();
-					// Get username of new connection
-					//					String name=(new Scanner ( skt.getInputStream() )).nextLine();
-					//					System.out.println(name);
-					//					if(hasName(name)){
-					this.currnet_username = (new Scanner ( skt.getInputStream() )).nextLine();
+					Scanner sc = new Scanner (skt.getInputStream());
+					this.currnet_username = sc.nextLine();
 					setText("New Client: \"" + this.currnet_username + "\"" + "\n"
 							+ "Host:" + skt.getInetAddress().getHostAddress() + "\n"
 							+ "***********************************" );
@@ -101,7 +95,7 @@ public class Server {
 					ThreadSERVER client = new ThreadSERVER(this, skt); // Init Obj of ClientThread
 					clients.add(client); // client has added to the list
 					client.name = this.currnet_username;
-					count++; // inc online users
+					count++; // increase online users
 					Thread thread = new Thread(client); // Made a new Thread called thread
 					thread.start(); // Now thread.run will work
 				}
@@ -110,9 +104,6 @@ public class Server {
 				}
 			}
 		}
-
-
-
 	}
 	public static boolean hasName(String s) {
 		for(ThreadSERVER client : clients)
@@ -147,6 +138,7 @@ public class Server {
 				lbl_user.setText("CLIENTS NAMES:"+getNames());
 			else
 				lbl_user.setText("CLIENTS NAMES: NULL");
+			
 			lbl_number.setText("ONLINE:"+count);
 		}
 		msg_TA.setText(msg_TA.getText() + "\n" + msg);
@@ -191,22 +183,20 @@ public class Server {
 			}
 		});
 
-
+		//Frame JFrame
 		login_frame.getContentPane().setLayout(null);
-
-
-
 		lbl_number = new JLabel("ONLINE:"+count);
 		lbl_number.setBounds(2, 480, 105, 20);
 		lbl_number.setFont(new Font("Arial", Font.BOLD, 16));
-
 		login_frame.getContentPane().add(lbl_number);
 
+		//USER LIST Label
 		lbl_user = new JLabel("CLIENTS NAMES: NULL");
 		lbl_user.setBounds(2, 500, 500, 20);
 		lbl_user.setFont(new Font("Arial", Font.BOLD, 16));
 		login_frame.getContentPane().add(lbl_user);
-
+		
+		//Clean JButton
 		JButton btnNewButton_1 = new JButton("Clean");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -216,11 +206,10 @@ public class Server {
 		btnNewButton_1.setBounds(2, 530, 479, 29);
 		login_frame.getContentPane().add(btnNewButton_1);
 
-
+		//All Messages TextArea
 		msg_TA = new JTextArea("Server is ON!");
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(5, 25, 475, 450);
-
 		msg_TA.setFont(new Font("Courier New", Font.PLAIN, 20));
 		msg_TA.setBackground(Color.DARK_GRAY);
 		msg_TA.setForeground(Color.GREEN);
@@ -229,10 +218,13 @@ public class Server {
 		login_frame.getContentPane().add(msg_TA);
 		ImageIcon icon = new ImageIcon("./img/icon.png"); // Set Icon to Chat
 		login_frame.setIconImage(icon.getImage());
-
+		
+		//Host Label
 		JLabel lbl_host = new JLabel("The server is listening on: "+myServer.getInetAddress()+":"+myServer.getLocalPort());
 		lbl_host.setBounds(2, 2, 500, 20);
 		lbl_host.setFont(new Font("Arial", Font.BOLD, 16));
+		
+		//JFrame
 		login_frame.add(lbl_host);
 		login_frame.setResizable(false);
 		login_frame.setVisible(true);
@@ -241,42 +233,36 @@ public class Server {
 
 	}
 	/* ************************** InitWindow_BeforeStart ************************** */
-	static JTextField txtEnterPORT;
-	static JLabel PORT1;
+	static JTextField PORT_Tf;
+	static JLabel PORT_Label;
 	static JFrame frame;
 	public static void InitWindow_BeforeStart() {
-//		frame = new JFrame("Start \"T&O\" Server");
-//		frame.setBounds(100,100,482,160);
-//		frame.addWindowListener(new WindowAdapter() {
-//			public void windowClosing(WindowEvent we) { 
-//				System.exit(0);
-//			}
-//		});
-	
+
+		//Frame JFRAME
 		frame = new JFrame();
 		frame.setTitle("T&O Chat: Login\r\n");
 		frame.setBounds(100, 100, 522, 188);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		// enter PORT number
-		txtEnterPORT = new JTextField();
-		txtEnterPORT.setText("9999");
-		txtEnterPORT.setFont(new Font("Courier New", Font.PLAIN, 20));
-		txtEnterPORT.setBounds(80,50,120,20);
-		txtEnterPORT.setColumns(10);
-		
-		frame.add(txtEnterPORT);
-		
-		PORT1= new JLabel("PORT");
-		PORT1.setBounds(20, 50, 150, 20);
-		PORT1.setFont(new Font("Courier New", Font.PLAIN, 20));
-		frame.add(PORT1);
+		//PORT Tf
+		PORT_Tf = new JTextField();
+		PORT_Tf.setText("9999");
+		PORT_Tf.setFont(new Font("Courier New", Font.PLAIN, 20));
+		PORT_Tf.setBounds(80,50,120,20);
+		PORT_Tf.setColumns(10);
+
+		//PORT Label
+		PORT_Label= new JLabel("PORT");
+		PORT_Label.setBounds(20, 50, 150, 20);
+		PORT_Label.setFont(new Font("Courier New", Font.PLAIN, 20));
 		
 		ImageIcon icon = new ImageIcon("./img/icon.png"); // Set Icon to Chat
 		frame.setIconImage(icon.getImage());
+		frame.add(PORT_Tf);
+		frame.add(PORT_Label);
 
-		// Adding Start Button
+		//Start button JButton
 		JLabel start = new JLabel(new ImageIcon("./img/start.png"));
 		start.setVisible(true);
 		frame.add(start);
@@ -286,7 +272,7 @@ public class Server {
 		start.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				// Close the last frame	
-				PORT=Integer.parseInt(txtEnterPORT.getText());
+				PORT = Integer.parseInt(PORT_Tf.getText());
 				frame.setVisible(false);
 				frame.dispose();
 			}
