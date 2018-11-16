@@ -4,6 +4,8 @@
  */
 package Client;
 import java.awt.Font;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
@@ -18,16 +20,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-
 public class Client {
-	
 	private static String host ;
 	private static int PORT ;
 	private String username;
 	private String serverhost;
 	private int serverport;
-	
-
 
 	/* ************************** Setters and Getters ************************** */
 

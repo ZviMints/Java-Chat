@@ -41,15 +41,15 @@ public class Server {
 	 */
 	public void startServer()
 	{
-		clients = new ArrayList<ThreadSERVER>(); // init the client arraylist
+		clients = new ArrayList<ThreadSERVER>(); // Init the client Arraylist
 		try {
 			myServer = new ServerSocket(PORT); // Open the Server
 			acceptClients(myServer); // Now the Server can Accept clients
 		}
 		catch(Exception e)
 		{
-			System.err.println("Couldn't init the Server with "+PORT+" port");
-		}
+			JOptionPane.showMessageDialog(null, "Couldn't init the Server with "+PORT+" port");
+			}
 	}
 
 	/* ************************** Accept Clients ************************** */
@@ -93,7 +93,7 @@ public class Server {
 							+ "Host:" + skt.getInetAddress().getHostAddress() + "\n"
 							+ "***********************************" );
 
-					ThreadSERVER client = new ThreadSERVER(this, skt); // Init Obj of ClientThread
+					ThreadSERVER client = new ThreadSERVER(this, skt); // Init Object of ClientThread
 					clients.add(client); // client has added to the list
 					client.name = this.currnet_username;
 					count++; // increase online users
@@ -274,12 +274,13 @@ public class Server {
 			public void mouseClicked(MouseEvent e) {
 				// Close the last frame	
 				PORT = Integer.parseInt(PORT_Tf.getText());
-				if(PORT>1023) {
+				if(PORT > 1023) {
 				frame.setVisible(false);
 				frame.dispose();
 				}
 				else
-					JOptionPane.showMessageDialog(null, "Invalid PORT! \n "); 
+					JOptionPane.showMessageDialog(null, "Invalid PORT! \n"
+							+ "Ports in [0,1023] are saved PORTs"); 
 			}
 		});
 		frame.setVisible(true);
