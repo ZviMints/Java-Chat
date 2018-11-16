@@ -29,10 +29,11 @@ In addition, the message window appears if the client has joined or left the cha
 
 <h3>The Project Includes:</h3>
 <img src="./img/packages.jpg" width="420px" height="130px">
-<h3>Package myMath:</h3>
-<img src="./img/AllClassesUnderMyMath.jpg">
-<h3>Hierarchy of myMath</h3>
-<img src="./img/Hierarchy.jpg">
+<h3>Package clinet:</h3>
+<img src="./img/clientpackag.jpg">
+<h3>Hierarchy of client</h3>
+<img src="./img/hierarchyclient.jpg">
+
 <h3>Monom class</h3>
 <hr>
 <img src="./img/Monom.jpg">
