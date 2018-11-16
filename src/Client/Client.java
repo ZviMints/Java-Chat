@@ -76,6 +76,7 @@ public class Client {
 	{
 		return  !login_frame.isVisible();
 	}
+	
 	/* ************************** InitWindow ************************** */
 	static JTextField USERNAME_Tf;
 	static JTextField IP_Tf;
@@ -152,6 +153,7 @@ public class Client {
 					try {
 						host = getHOSTFromForm();
 						PORT = getPORTFromForm();
+						if(PORT>1023) { 
 						Socket skt = new Socket(host, PORT);
 						ServerOpen = true;
 						PrintWriter out = new PrintWriter(skt.getOutputStream(), true);
@@ -173,6 +175,9 @@ public class Client {
 							}	
 							System.out.println(in.readLine());
 						}
+						}
+						else
+							JOptionPane.showMessageDialog(null, "Invalid PORT! \n "); 
 					}
 					catch (IOException e1) {
 						if(!ServerOpen)

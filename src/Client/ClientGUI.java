@@ -10,6 +10,8 @@ import javax.swing.JTextArea;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -17,7 +19,7 @@ import java.net.Socket;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 
-public class ClientGUI {
+public class ClientGUI implements KeyListener{
 	private JFrame frmToChatChat;
 	private String username;
 	private String info_localport ;
@@ -27,13 +29,14 @@ public class ClientGUI {
 	private int count = 1;
 	private ThreadCLIENT threadCLIENT;
 	private JLabel online_lbl;
+
 	/**
 	 * Create the application.
 	 * @param skt 
 	 * @param threadCLIENT 
 	 * @throws IOException 
 	 */
-	
+
 	public ClientGUI(String info_username,String info_localport, String info_Server, ThreadCLIENT threadCLIENT ) throws IOException {	
 		this.username = info_username;
 		this.info_localport = info_localport;
@@ -41,6 +44,7 @@ public class ClientGUI {
 		initialize();
 		this.frmToChatChat.setVisible(true);
 		this.threadCLIENT = threadCLIENT;
+
 	}
 	/**
 	 * Initialize the contents of the frame.
@@ -50,17 +54,17 @@ public class ClientGUI {
 		frmToChatChat = new JFrame();
 		frmToChatChat.setTitle("T&O Chat: "+username+" Chat");
 		frmToChatChat.setBounds(100, 100, 714, 591);
-		
+
 		frmToChatChat.addWindowListener(new WindowAdapter() {
-			  public void windowClosing(WindowEvent we) { // Closing the frame
+			public void windowClosing(WindowEvent we) { // Closing the frame
 				try {
 					threadCLIENT.stop();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			    System.exit(0);
-			  }
-			});
+				System.exit(0);
+			}
+		});
 		ImageIcon icon = new ImageIcon("./img/icon.png"); // Set Icon to Chat
 		frmToChatChat.setIconImage(icon.getImage());
 		frmToChatChat.getContentPane().setLayout(null);
@@ -100,6 +104,57 @@ public class ClientGUI {
 		textArea_msg.setFont(new Font("Courier New", Font.PLAIN, 20));
 		textArea_msg.setBackground(Color.MAGENTA);
 		frmToChatChat.getContentPane().add(textArea_msg);
+		textArea_msg.addKeyListener(new KeyListener() { //press enter to send msg
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if(e.getKeyChar()==KeyEvent.VK_ESCAPE) {
+					try {
+						threadCLIENT.stop();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					System.exit(0);
+				
+				
+				}
+				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+					if(!textArea_msg.getText().trim().equals(""))
+					{
+
+						String info_username = getUsername();
+						String UserInput = textArea_msg.getText();
+
+						threadCLIENT.addNextMessage("<"+getTime()+">"+"["+info_username +"]: " + UserInput);
+						textArea_msg.setText("");
+					}
+
+					else
+					{
+						String message = "Error! \n"
+								+ "You Must Type Somthing Before Sending a Message!\n";
+						JOptionPane.showMessageDialog(new JFrame(), message, "Error",
+								JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		});
+
+
+
 
 		JButton btn_send = new JButton("Send");
 		btn_send.setBounds(596, 465, 81, 54);
@@ -107,6 +162,7 @@ public class ClientGUI {
 			public void actionPerformed(ActionEvent e) { // Send Button has Clicked
 				if(!textArea_msg.getText().trim().equals(""))
 				{
+
 					String info_username = getUsername();
 					String UserInput = textArea_msg.getText();
 
@@ -129,20 +185,20 @@ public class ClientGUI {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(15, 95, 662, 327);
 		frmToChatChat.getContentPane().add(scrollPane);
-		
-				allMsgFromallUsers = new JTextArea();
-				scrollPane.setViewportView(allMsgFromallUsers);
-				allMsgFromallUsers.setLineWrap(true);
-				allMsgFromallUsers.setText(
-						 "             (*)To Write Private Message: \r\n                 Write @<name>|<msg>\r\n******************************************************");
-				allMsgFromallUsers.setFont(new Font("Courier New", Font.PLAIN, 20));
-				allMsgFromallUsers.setBackground(Color.CYAN);
-				allMsgFromallUsers.setEditable(false);
-				
-				online_lbl = new JLabel("<"+getCount()+"> People are online to chat right now.");
-				online_lbl.setFont(new Font("Arial", Font.ITALIC, 17));
-				online_lbl.setBounds(15, 429, 366, 20);
-				frmToChatChat.getContentPane().add(online_lbl);
+
+		allMsgFromallUsers = new JTextArea();
+		scrollPane.setViewportView(allMsgFromallUsers);
+		allMsgFromallUsers.setLineWrap(true);
+		allMsgFromallUsers.setText(
+				"             (*)To Write Private Message: \r\n                 Write @<name>|<msg>\r\n******************************************************");
+		allMsgFromallUsers.setFont(new Font("Courier New", Font.PLAIN, 20));
+		allMsgFromallUsers.setBackground(Color.CYAN);
+		allMsgFromallUsers.setEditable(false);
+
+		online_lbl = new JLabel("<"+getCount()+"> People are online to chat right now.");
+		online_lbl.setFont(new Font("Arial", Font.ITALIC, 17));
+		online_lbl.setBounds(15, 429, 366, 20);
+		frmToChatChat.getContentPane().add(online_lbl);
 	}
 	/* ************************** Setters and Getters ************************** */
 	private int getCount()
@@ -159,19 +215,34 @@ public class ClientGUI {
 			count = Integer.parseInt(s_count.substring(0, 1));	
 			online_lbl.setText("<"+count+"> People are online to chat right now.");
 			msg = s_count.substring(1);
-			
+
 		}
 		else if(msg.equals("<closeme>")) // gets here only if server close himself
 		{
 			System.exit(0);
 		}
-			String temp = allMsgFromallUsers.getText() + "\n" + msg;
-			allMsgFromallUsers.setText(temp);
+		String temp = allMsgFromallUsers.getText() + "\n" + msg;
+		allMsgFromallUsers.setText(temp);
 	}
 	public String getTime()
 	{
-		   DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
-		   LocalDateTime now = LocalDateTime.now();  
-		   return dtf.format(now);
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
+		LocalDateTime now = LocalDateTime.now();  
+		return dtf.format(now);
+	}
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 }

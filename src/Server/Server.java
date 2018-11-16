@@ -25,6 +25,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -273,8 +274,12 @@ public class Server {
 			public void mouseClicked(MouseEvent e) {
 				// Close the last frame	
 				PORT = Integer.parseInt(PORT_Tf.getText());
+				if(PORT>1023) {
 				frame.setVisible(false);
 				frame.dispose();
+				}
+				else
+					JOptionPane.showMessageDialog(null, "Invalid PORT! \n "); 
 			}
 		});
 		frame.setVisible(true);
