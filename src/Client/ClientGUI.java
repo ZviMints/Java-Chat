@@ -161,7 +161,17 @@ public class ClientGUI{
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(15, 95, 662, 327);
 		frmToChatChat.getContentPane().add(scrollPane);		
-	    allMsgFromallUsers = new JTextArea();
+		final ImageIcon AllMessages = new ImageIcon("./img/AllMessages.png");
+		allMsgFromallUsers = new JTextArea() { // Making TextArea From Image
+	      Image image = AllMessages.getImage();
+	      {
+	        setOpaque(false);
+	      }
+	      public void paint(Graphics g) {
+	        g.drawImage(image, 0, 0, this);
+	        super.paint(g);
+	      }
+	    };	
 	    allMsgFromallUsers.setBackground(Color.CYAN);
 	    allMsgFromallUsers.setForeground(Color.BLACK);	  
 		scrollPane.setViewportView(allMsgFromallUsers);
