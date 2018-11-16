@@ -5,7 +5,6 @@
 package Server;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class ThreadSERVER implements Runnable {
@@ -30,7 +29,7 @@ public class ThreadSERVER implements Runnable {
 	private ThreadSERVER GetClientByName(String name)
 	{
 		ThreadSERVER ans = null;
-		for(ThreadSERVER client : myServer.getClients()) 
+		for(ThreadSERVER client : Server.getClients()) 
 		{
 			if(name.equals(client.name))
 				ans = client;
@@ -40,7 +39,7 @@ public class ThreadSERVER implements Runnable {
 	public String getNames()
 	{
 		String s = "";
-		for(ThreadSERVER client : myServer.getClients())
+		for(ThreadSERVER client : Server.getClients())
 		{
 			if(s!="")
 				s+=",";
@@ -53,7 +52,7 @@ public class ThreadSERVER implements Runnable {
 	public void Broadcast(String message){
 		Server.setText(message);
 
-		for(ThreadSERVER client : myServer.getClients())
+		for(ThreadSERVER client : Server.getClients())
 		{
 			PrintWriter pw_oftheclient = client.getWriter();
 			pw_oftheclient.write(message + "\n");
@@ -63,7 +62,7 @@ public class ThreadSERVER implements Runnable {
 	/* ************************** Private ************************** */
 	public void Private(String to, String from,String message, boolean LIST) { // LIST IS FOR SHOWING WHO ONLINE
 		boolean found = false;
-		for(ThreadSERVER client : myServer.getClients()) 
+		for(ThreadSERVER client : Server.getClients()) 
 		{
 			if(client.name.equals(to))
 			{
