@@ -28,57 +28,11 @@ In addition, the message window appears if the client has joined or left the cha
 
 
 <h3>The Project Includes:</h3>
-<img src="./img/packages.jpg" width="420px" height="130px">
+<img src="./img/packages.jpg" width="400px" height="180px" >
 <h3>Package clinet:</h3>
 <img src="./img/clientpackag.jpg">
-<h3>Hierarchy of client</h3>
-<img src="./img/hierarchyclient.jpg">
+<h3>Package server:</h3>
+<img src="./img/serverpackag.jpg">
 
-<h3>Monom class</h3>
-<hr>
-<img src="./img/Monom.jpg">
-<h3>Constructors:</h3>
-<img src="./img/Monom_Constructors.jpg">
-<h3>A valid init for Monom:</h3>
-<list>
-<li>From other Monom</li>
-<li>From coefficient and power</li>
-<li>From string of the form:</li>
-<img src="./img/Monom_valid.jpg" width="500px" height="130px">
-</list>
-<h3>Polynom class</h3>
-<hr>
-<img src="./img/Polynom.jpg">
-<br>
-@version 2.0 includes now AreaBellowX, details above.
-<h3>Constructors:</h3>
-<img src="./img/Polynom_Constructors.jpg">
-<h3>A valid init for Polynom:</h3>
-<list>
-<li>From String which consists of addition and subtraction operations between valid monoms</li>
-<li>From other Polynom</li>
-</list>
-<h3>Graph</h3>
-<hr>
-<h4>Package Graph</h4>
-<img src="./img/AllClassesUnderGraph.jpg">
-<h3>About the Graph</h3>
-The graph is an open source library which can be found at <a href="https://github.com/rendon/Plane">https://github.com/rendon/Plane</a>
-The graph has been modified in visibility and now shows minimum and maximum points on the function
-<br>
-<img src="./img/Graph.jpg" width="450" height="360">
-<br>
-The yellow dots represents the minimum and maximum points of the function (the function in Cyan color )
-<h3>Unit Testing</h3>
-<hr>
-Under the Polynom\OOP Assignment\Testing\myMath folder you can find two Unit Testing files in order to test MONOM class and POLYNOM class that can be found at myMath package
-<h3>External info</h3>
-<hr>
-<list>
-<li>Riemann's Integral: <a href="https://en.wikipedia.org/wiki/Riemann_integral">https://en.wikipedia.org/wiki/Riemann_integral</a></li>
-<li>Root: <a href="https://www.geeksforgeeks.org/program-for-bisection-method/"> https://www.geeksforgeeks.org/program-for-bisection-method/</a></li>
-<li>Polynomial: <a href="https://en.wikipedia.org/wiki/Polynomial">https://en.wikipedia.org/wiki/Polynomial</a></li>
-<li>Monomial: <a href="https://en.wikipedia.org/wiki/Monomial">https://en.wikipedia.org/wiki/Monomial</a></li>
-<li>Derivative: <a href="https://en.wikipedia.org/wiki/Derivative">https://en.wikipedia.org/wiki/Derivative</a></li>
-</list>
+
 
