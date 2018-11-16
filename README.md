@@ -28,7 +28,7 @@ In addition, the message window appears if the client has joined or left the cha
 
 
 <h3>The Project Includes:</h3>
-<img src="./img/packages.jpg" >
+<img src="./img/packages.jpg" width="500px" height="180px" >
 <h3>Package clinet:</h3>
 <img src="./img/clientpackag.jpg">
 <h3>Package server:</h3>
