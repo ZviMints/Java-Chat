@@ -15,17 +15,30 @@ public class ThreadSERVER implements Runnable {
 	public String name = "";
 
 	/* ************************** Constructor ************************** */
-
+	/**
+	 * Construct Thread Server
+	 * @param server is the current server
+	 * @param skt is the current socket
+	 */
 	public ThreadSERVER(Server server, Socket skt) {
 		this.myServer = server;
 		this.skt = skt;
 	}
 
 	/* ************************** Setters And Getters ************************** */
+	/**
+	 * Getters for PrintWriter
+	 * @return PrintWriter of currect socket
+	 */
 	private PrintWriter getWriter()
 	{
 		return this.output;
 	}
+	/**
+	 * This method is responsible to return ThreadServer Obj by Name
+	 * @param name is the client name
+	 * @return  ThreadServer Thread
+	 */
 	private ThreadSERVER GetClientByName(String name)
 	{
 		ThreadSERVER ans = null;
@@ -36,6 +49,10 @@ public class ThreadSERVER implements Runnable {
 		}
 		return ans;
 	}
+	/**
+	 * This method is responsible to send back all the names in the client list
+	 * @return all names in client list in this form "name_1,name_2,name_3.."
+	 */
 	public String getNames()
 	{
 		String s = "";
@@ -49,6 +66,10 @@ public class ThreadSERVER implements Runnable {
 	}
 
 	/* ************************** Broadcast ************************** */
+	/**
+	 * This method send message from server to all clients in Server client list
+	 * @param message is the message we want to deliver
+	 */
 	public void Broadcast(String message){
 		Server.setText(message);
 
@@ -60,6 +81,13 @@ public class ThreadSERVER implements Runnable {
 		}
 	}
 	/* ************************** Private ************************** */
+	/**
+	 * This method send PRIVATE message to user
+	 * @param to is the name of the client that need to get message
+	 * @param from is the name of the client that send the message
+	 * @param message is the message we want to deliver
+	 * @param LIST is true if we want to send Who's online message and false if its regular private message
+	 */
 	public void Private(String to, String from,String message, boolean LIST) { // LIST IS FOR SHOWING WHO ONLINE
 		boolean found = false;
 		for(ThreadSERVER client : Server.getClients()) 
@@ -90,73 +118,74 @@ public class ThreadSERVER implements Runnable {
 	/* ************************** Run ( SERVER THREAD ) ************************** */
 	@Override
 	public void run() {
-			try {
-				this.output = new PrintWriter(skt.getOutputStream(),false);
-				Broadcast("<update>"+Server.count+" -> ["+ name +"] Has Connected");
-				input = new Scanner(skt.getInputStream());
-				while(skt.isConnected()) // There connection with the server the current CLIENT
+		try {
+			this.output = new PrintWriter(skt.getOutputStream(),false);
+			Broadcast("<update>"+Server.count+" -> ["+ name +"] Has Connected");
+			input = new Scanner(skt.getInputStream());
+			while(skt.isConnected()) // There connection with the server the current CLIENT
+			{
+				if(input.hasNextLine())
 				{
-					if(input.hasNextLine())
+					String msg = input.nextLine();
+					if(msg.contains("@")) // Private msg
 					{
-						String msg = input.nextLine();
-						if(msg.contains("@")) // Private msg
-						{
-							try {
-								// MUST BE OF THE FORM @<name>|<msg>
-								int index_a = msg.indexOf("@");
-								int index_name = msg.indexOf("]");
-								int index_line = msg.indexOf("|");
-								int index_triangle = msg.indexOf(">");
-								String time = msg.substring(1,index_triangle);
-								String username_to = msg.substring(index_a+1,index_line);
-								String username_from = msg.substring(index_triangle+2,index_name);
-								String deliver = msg.substring(index_line+1);
-								System.out.println(username_to+","+username_from+","+deliver);
-								Private(username_to,username_from,"<"+time+">"+"[Private From "+username_from+"]: "+deliver,false);
-							}
-							catch(Exception e)
-							{
-								int index_name = msg.indexOf("]");
-								int index_triangle = msg.indexOf(">");
-								String username_from = msg.substring(index_triangle+2,index_name);
-								String temp = "Wrong Format! Try: '@<name>|<msg>'";
-								Private(username_from,username_from,temp,false);
-							}
+						try {
+							// MUST BE OF THE FORM @<name>|<msg>
+							int index_a = msg.indexOf("@");
+							int index_name = msg.indexOf("]");
+							int index_line = msg.indexOf("|");
+							int index_triangle = msg.indexOf(">");
+							String time = msg.substring(1,index_triangle);
+							String username_to = msg.substring(index_a+1,index_line);
+							String username_from = msg.substring(index_triangle+2,index_name);
+							String deliver = msg.substring(index_line+1);
+							System.out.println(username_to+","+username_from+","+deliver);
+							Private(username_to,username_from,"<"+time+">"+"[Private From "+username_from+"]: "+deliver,false);
 						}
-						else
+						catch(Exception e) // Wrong format of private message
+						// ex . @message or other.
 						{
-							if(msg.contains("<close>"))
-							{
-								int index_triangle = msg.indexOf("<");
-								String username = msg.substring(0,index_triangle);
-								myServer.getClients().remove(GetClientByName(username));
-								Server.count--;
-								Server.setText("*****************" + "\n" +
-										"Closing \""+username+"\"..." + "\n" +
-										"Left Online:"+Server.count + "\n" +
-										"\""+ username +"\" Removed From Client List" + "\n" +
-										"*****************");
-								Broadcast("<update>"+Server.count+" -> ["+ username +"] Has Disconnected");
-								skt.close();
-							}
-							else if(msg.contains("<getnames>"))
-							{
-								int index_triangle = msg.indexOf("<");
-								String username = msg.substring(0,index_triangle);
-								String temp = getNames();
-								Private(username,username,temp,true);
-							}
-							else // BROADCAST MSG
-							{
-								Broadcast(msg);
-							}
+							int index_name = msg.indexOf("]");
+							int index_triangle = msg.indexOf(">");
+							String username_from = msg.substring(index_triangle+2,index_name);
+							String temp = "Wrong Format! Try: '@<name>|<msg>'";
+							Private(username_from,username_from,temp,false);
 						}
 					}
-				}			
-			}
-			catch(Exception e)
-			{
-				System.err.println("Error from ThreadSERVER");
-			}
+					else // It's not a private message
+					{
+						if(msg.contains("<close>")) // Closing a Thread
+						{
+							int index_triangle = msg.indexOf("<");
+							String username = msg.substring(0,index_triangle);
+							myServer.getClients().remove(GetClientByName(username));
+							Server.count--;
+							Server.setText("*****************" + "\n" +
+									"Closing \""+username+"\"..." + "\n" +
+									"Left Online:"+Server.count + "\n" +
+									"\""+ username +"\" Removed From Client List" + "\n" +
+									"*****************");
+							Broadcast("<update>"+Server.count+" -> ["+ username +"] Has Disconnected");
+							skt.close();
+						}
+						else if(msg.contains("<getnames>")) // Send back the names that online right now
+						{
+							int index_triangle = msg.indexOf("<");
+							String username = msg.substring(0,index_triangle);
+							String temp = getNames();
+							Private(username,username,temp,true);
+						}
+						else // BROADCAST MSG
+						{
+							Broadcast(msg);
+						}
+					}
+				}
+			}			
+		}
+		catch(Exception e)
+		{
+			System.err.println("Error from ThreadSERVER");
 		}
 	}
+}

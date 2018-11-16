@@ -18,14 +18,21 @@ public class ThreadCLIENT implements Runnable {
 
 
 	/* ************************** Setters and Getters ************************** */
-
+	/**
+	 * Construct of the Thread
+	 * @param skt is the current socket
+	 * @param username is the current username
+	 */
 	public ThreadCLIENT(Socket skt, String username) {
 		this.skt = skt;
 		this.username = username;
 		msgLL = new LinkedList<String>();
 	}
 	/* ************************** addNextMessege ************************** */
-
+	/**
+	 * This method is responsible to add Message to the Link List
+	 * @param message is the added message
+	 */
 	public void addNextMessage(String message){
 		synchronized (msgLL){
 			hasMsg = true;
@@ -33,7 +40,10 @@ public class ThreadCLIENT implements Runnable {
 		}
 	}
 	/* ************************** Stop function ************************** */
-
+	/**
+	 * this method is responsible to stop the Thread and send to Server close message
+	 * @throws IOException
+	 */
 	public void stop() throws IOException{
 		PrintWriter output = new PrintWriter(skt.getOutputStream(),false);
 		output.println(username+"<close>");

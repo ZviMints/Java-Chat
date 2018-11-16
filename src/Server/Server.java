@@ -31,11 +31,20 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class Server {
-	private static int PORT ; // Init the PORT for the server
-	String currnet_username = ""; // for print Hello to server
+	private static int PORT = 9999; // Init the PORT for the server
+	String currnet_username = ""; // Pick name from the client
 	private static List<ThreadSERVER> clients; // list of all clients 
-	private static ServerSocket myServer; //
-	public static int count = 0;
+	private static ServerSocket myServer; // Init ServerSocket
+	public static int count = 0; // Number of clients online
+	/* **************************  Constructor ************************** */
+	/**
+	 * This method is responsible to init the server as Constructor
+	 * @param PORT is the PORT of the server
+	 */
+	public Server(int PORT)
+	{
+	}
+	/* **************************  Methods ************************** */
 	/**
 	 * This Method is Starting the Server, Init ServerSocket.
 	 */
@@ -53,6 +62,10 @@ public class Server {
 	}
 
 	/* ************************** Accept Clients ************************** */
+	/**
+	 * This method is responsible for getting new users to chat
+	 * @param myServer is the ServerSocket
+	 */
 	private void acceptClients(ServerSocket myServer) {
 		InitWindow_AfterStart();
 		while(true) {
@@ -68,13 +81,13 @@ public class Server {
 					String clientName = in.readLine();
 					if(!ContainName(clientName))
 					{
-						out.println("OK");
+						out.println("OK"); // There no such name at list.
 						flag = true;
 						skt.close();
 					}
 					else
 					{
-						out.println("NO");
+						out.println("NO"); // The name alredy in use
 						flag = false;
 						skt.close();
 					}
@@ -83,7 +96,7 @@ public class Server {
 			catch (Exception e){
 				// All good, the Socket is closed.
 			}	
-			if(flag)
+			if(flag) // flag=true means that the name is current and we can open socket properly
 			{
 				try {
 					Socket skt = myServer.accept();
@@ -116,21 +129,26 @@ public class Server {
 		return true;
 	}
 	/* ************************** Setters And Getters ************************** */
-	public static void print(String s)
-	{
-		System.out.println(s);
-	}
+	/**
+	 * This method is responsible to send Client List as Object
+	 * @return ThreadSERVER LIST
+	 */
 	public static List<ThreadSERVER> getClients()
 	{
 		return clients;
 	}
-	public Server(int PORT)
-	{
-	}
+	/**
+	 * This method checks whether the server window is open or closed
+	 * @return true if frame is close, false if else.
+	 */
 	private static boolean Closed()
 	{
 		return  !frame.isVisible();
 	}
+	/**
+	 * This method is responsible to set text at TextArea (server side)
+	 * @param msg is the message we want to appear on the TextArea
+	 */
 	public static void setText(String msg) {
 		if(msg.contains("<update>"))
 		{
@@ -143,6 +161,11 @@ public class Server {
 		}
 		msg_TA.setText(msg_TA.getText() + "\n" + msg);
 	}
+	/**
+	 * this method is responsible to check if the name is alredy in use.
+	 * @param name is the name we get from client
+	 * @return true if the name are in use, false if else.
+	 */
 	public boolean ContainName(String name)
 	{
 		for(ThreadSERVER client : getClients())
@@ -152,6 +175,10 @@ public class Server {
 		}
 		return false;
 	}
+	/**
+	 * This method is responsible to send back all the names in the client list
+	 * @return all names in client list in this form "name_1,name_2,name_3.."
+	 */
 	public static String getNames()
 	{
 		String s = "";
@@ -164,10 +191,10 @@ public class Server {
 		return s;
 	}
 	/* ************************** InitWindow_AfterStart ************************** */
-	static JTextArea msg_TA;
-	static JFrame login_frame;
-	static JLabel lbl_user;
-	static JLabel lbl_number;
+	static JTextArea msg_TA; // The TextArea that shows all the messages at the server
+	static JFrame login_frame; // main JFrame
+	static JLabel lbl_user; // Label that represent the names of the clients that online
+	static JLabel lbl_number; // Label that represent the number of online clients
 	public static void InitWindow_AfterStart()
 	{
 		login_frame = new JFrame();
@@ -233,6 +260,9 @@ public class Server {
 
 	}
 	/* ************************** InitWindow_BeforeStart ************************** */
+	/**
+	 * The Frame before the user press "Start the Server"
+	 */
 	static JTextField PORT_Tf;
 	static JLabel PORT_Label;
 	static JFrame frame;

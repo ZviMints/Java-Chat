@@ -28,7 +28,12 @@ public class Client {
 	private int serverport;
 
 	/* ************************** Setters and Getters ************************** */
-
+	/**
+	 * Construct of the Client class
+	 * @param clientName is the current client name
+	 * @param host is the current host, ex "localhost"
+	 * @param port is the port server
+	 */
 	public Client(String clientName, String host, int port) {
 		this.username = clientName;
 		this.serverhost = host;
@@ -36,7 +41,9 @@ public class Client {
 	}
 
 	/* ************************** Methods ************************** */
-
+	/**
+	 * Init the client after pressing "Login"
+	 */
 	private void startClient()
 	{
 		try {
@@ -58,23 +65,38 @@ public class Client {
 	}
 
 	/* ************************** InitWindow Setters and Getters ************************** */
+	/**
+	 * This method is responsible to get Text from TextField 
+	 * @return the name
+	 */
 	private static String getName_form()
 	{
 		return USERNAME_Tf.getText();
 	}
+	/**
+	 * This method gets the HOST from TextField
+	 * @return HOST as String from the form
+	 */
 	private static String getHOSTFromForm()
 	{
 		return IP_Tf.getText();
 	}
+	/**
+	 * This method gets the PORT from TextField and parse it to int
+	 * @return PORT from the form
+	 */
 	private static int getPORTFromForm()
 	{
 		return Integer.parseInt(PORT_Tf.getText());
 	}
+	/**
+	 * This method checks whether the server window is open or closed
+	 * @return true if frame is close, false if else.
+	 */
 	private static boolean Closed()
 	{
 		return  !login_frame.isVisible();
 	}
-	
 	/* ************************** InitWindow ************************** */
 	static JTextField USERNAME_Tf;
 	static JTextField IP_Tf;
