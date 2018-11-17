@@ -37,13 +37,13 @@ METHODS:
 <br>
 <img src="./img/javadoc_THREADServer.jpg">
 <h3>Photos:</h3>
-<img src="./img/Server.jpg">
-<img src="./img/win_server.jpg">
+<img src="./img/Server.jpg" width="300px" height="100px">
+<img src="./img/win_server.jpg" width="400px" height="400px">
 <hr>
 <h1>About the Client:</h1>
 METHODS:
 <br>
-<img src="./img/javadoc_Client.jpg" > 
+<img src="./img/javadoc_Client.jpg"> 
 The Client insert the Server connection details, such as IP and PORT, if the Server is running on the
 <br> 
 same computer as the client, the client can enter "localhost" as host.
@@ -74,8 +74,8 @@ if the Server is close, or the PORT is not valid, the user will get an error mes
 If the name is not in the clients list or the message is not from the above form, the user will receive an error message
 </list>
 <h3>Photos:</h3>
-<img src="./img/createclient.jpg">
-<img src="./img/win_client.jpg">
+<img src="./img/createclient.jpg" width="300px" height="100px">
+<img src="./img/win_client.jpg" width="400px" height="400px">
 <hr>
 <h1>Client Thread:</h1>
 METHODS:
