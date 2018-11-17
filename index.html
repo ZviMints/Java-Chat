@@ -1,13 +1,15 @@
 <h1>Chat Project</h1>  
- Created during a computer communication course during the second year at Ariel University in the Department of Computer Science, 2018
+ Created during a computer communication course during the second year at Ariel University 
+ <br>
+ in the Department of Computer Science, 2018
 <h3>Project site: <a href=https://github.com/ZviMints/Chat.git>https://github.com/ZviMints/Chat.git</a></h3>
 
 <h1>About the program</h1>
 This project implements a simple Server/ Client chat application using Java.
 The program includes two packages:
-<br><br>
+<br>
 <img src="./img/packages.jpg" width="450px" height="110px">
-<br><br>
+<br>
 The Client package allows to the client to connect into the server, and send message to 
 <br>
 the other people that also connected to the server, the client can send message, read messages,
@@ -19,8 +21,6 @@ Moreover, The server has a  window which can get information about chat clients.
 <br>
 <h1>Class Diagram:</h1>
 <img src="./img/javadoc_classdiagram.png"  width="700px" height="400px">
-<br>
-<hr>
 <h3>Client Package:</h3>
 <img src="./img/P_Client.jpg" width="450px" height="110px">
 <h3>Server Package:</h3>
@@ -38,10 +38,9 @@ Also in the server window there details about the server, for example who logged
 METHODS:
 <br>
 <img src="./img/javadoc_THREADServer.jpg">
-<hr>
 <h3>Photos:</h3>
 <img src="./img/Server.jpg">
-<br><br><br>
+<br>
 <img src="./img/win_server.jpg">
 <hr>
 <h1>About the Client:</h1>
@@ -78,15 +77,15 @@ if the Server is close, or the PORT is not valid, the user will get an error mes
 <li>In order to send Private message to a user type @NAME|MSG</li>
 If the name is not in the clients list or the message is not from the above form, the user will receive an error message
 </list>
+<h3>Photos:</h3>
+<img src="./img/createclinet.jpg">
+<br><br><br>
+<img src="./img/win_client.jpg">
 <hr>
 <h1>Client Thread:</h1>
 METHODS:
 <br>
 <img src="./img/javadoc_THREADClient.jpg">
 <hr>
-<h3>Photos:</h3>
-<img src="./img/createclinet.jpg">
-<br><br><br>
-<img src="./img/win_client.jpg">
-<br>
+
 
