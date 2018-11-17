@@ -8,7 +8,6 @@ This project implements a simple Server/ Client chat application using Java.
 The program includes two packages:
 <br>
 <img src="./img/packages.jpg" width="450px" height="110px">
-<br>
 The Client package allows to the client to connect into the server, and send message to 
 <br>
 the other people that also connected to the server, the client can send message, read messages,
@@ -39,14 +38,12 @@ METHODS:
 <img src="./img/javadoc_THREADServer.jpg">
 <h3>Photos:</h3>
 <img src="./img/Server.jpg">
-<br>
 <img src="./img/win_server.jpg">
 <hr>
 <h1>About the Client:</h1>
 METHODS:
 <br>
 <img src="./img/javadoc_Client.jpg" > 
-<br>
 The Client insert the Server connection details, such as IP and PORT, if the Server is running on the
 <br> 
 same computer as the client, the client can enter "localhost" as host.
@@ -78,7 +75,6 @@ If the name is not in the clients list or the message is not from the above form
 </list>
 <h3>Photos:</h3>
 <img src="./img/createclient.jpg">
-<br>
 <img src="./img/win_client.jpg">
 <hr>
 <h1>Client Thread:</h1>
