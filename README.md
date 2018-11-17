@@ -2,7 +2,7 @@
  Created during a computer communication course during the second year at Ariel University 
  <br>
  in the Department of Computer Science, 2018
-<h3>Project site: <a href=https://github.com/ZviMints/Chat.git>https://github.com/ZviMints/Chat.git</a></h3>
+<h3>Project site: <a href="https://zvimints.github.io/Chat/">https://zvimints.github.io/Chat/</a></h3>
 <h1>About the program</h1>
 This project implements a simple Server/ Client chat application using Java.
 The program includes two packages:
