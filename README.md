@@ -31,14 +31,13 @@ METHODS:
 <br>
 The Server receives a port from the Server Owner that  greater than 1023 and then open Server with the inserted port.
 Also in the server window there details about the server, for example who logged in or logged out of the server, and also who sent the message and administor options.
-<hr>
+<h3>Photos:</h3>
+<img src="./img/Server.jpg" width="300px" height="100px">
+<img src="./img/win_server.jpg" width="400px" height="400px">
 <h1>Server Thread:</h1>
 METHODS:
 <br>
 <img src="./img/javadoc_THREADServer.jpg">
-<h3>Photos:</h3>
-<img src="./img/Server.jpg" width="300px" height="100px">
-<img src="./img/win_server.jpg" width="400px" height="400px">
 <hr>
 <h1>About the Client:</h1>
 METHODS:
