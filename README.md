@@ -3,7 +3,6 @@
  <br>
  in the Department of Computer Science, 2018
 <h3>Project site: <a href=https://github.com/ZviMints/Chat.git>https://github.com/ZviMints/Chat.git</a></h3>
-
 <h1>About the program</h1>
 This project implements a simple Server/ Client chat application using Java.
 The program includes two packages:
@@ -20,7 +19,7 @@ The Server package allows all the client requests in parallel by using THREADS.
 Moreover, The server has a  window which can get information about chat clients.
 <br>
 <h1>Class Diagram:</h1>
-<img src="./img/javadoc_classdiagram.png"  width="700px" height="400px">
+<img src="./img/javadoc_classdiagram.png"  width="800px" height="410px">
 <h3>Client Package:</h3>
 <img src="./img/P_Client.jpg" width="450px" height="110px">
 <h3>Server Package:</h3>
@@ -78,8 +77,8 @@ if the Server is close, or the PORT is not valid, the user will get an error mes
 If the name is not in the clients list or the message is not from the above form, the user will receive an error message
 </list>
 <h3>Photos:</h3>
-<img src="./img/createclinet.jpg">
-<br><br><br>
+<img src="./img/createclient.jpg">
+<br>
 <img src="./img/win_client.jpg">
 <hr>
 <h1>Client Thread:</h1>
