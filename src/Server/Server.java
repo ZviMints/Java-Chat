@@ -195,6 +195,9 @@ public class Server {
 	static JFrame login_frame; // main JFrame
 	static JLabel lbl_user; // Label that represent the names of the clients that online
 	static JLabel lbl_number; // Label that represent the number of online clients
+	/**
+	 * This method opens GUI After click on "Start Server" Button
+	 */
 	public static void InitWindow_AfterStart()
 	{
 		login_frame = new JFrame();
@@ -261,7 +264,7 @@ public class Server {
 	}
 	/* ************************** InitWindow_BeforeStart ************************** */
 	/**
-	 * The Frame before the user press "Start the Server"
+	 * This method opens GUI Before click on "Start Server" Button
 	 */
 	static JTextField PORT_Tf;
 	static JLabel PORT_Label;
