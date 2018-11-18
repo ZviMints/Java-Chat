@@ -12,6 +12,8 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+
+import javax.management.RuntimeErrorException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,6 +27,7 @@ public class Client {
 	private String serverhost;
 	private int serverport;
 	private ThreadCLIENT threadCLIENT;
+	public Socket skt;
 
 	/* ************************** Setters and Getters ************************** */
 	/**
@@ -43,10 +46,10 @@ public class Client {
 	/**
 	 * Init the client after pressing "Login"
 	 */
-	private void startClient()
+	public void startClient()
 	{
 		try {
-			Socket skt = new Socket(serverhost, serverport);
+			skt = new Socket(serverhost, serverport);
 			Thread.sleep(1000); // waiting for network communication for 1000 ms
 			threadCLIENT = new ThreadCLIENT(skt, username);
 			Thread serverAccessThread = new Thread(threadCLIENT); // Open new Thread for each user
@@ -59,7 +62,7 @@ public class Client {
 		}
 		catch(Exception e)
 		{
-			System.err.println("Connection error!, Server Maybe Close");
+			throw new RuntimeException("Connection error!, Server Maybe Close");
 		}
 	}
 

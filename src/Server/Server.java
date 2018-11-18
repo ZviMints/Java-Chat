@@ -118,16 +118,6 @@ public class Server {
 			}
 		}
 	}
-	public static boolean hasName(String s) {
-		for(ThreadSERVER client : clients)
-		{
-			if(client.name.equals(s)) {
-				System.out.println(client.name);
-				return false;
-			}
-		}
-		return true;
-	}
 	/* ************************** Setters And Getters ************************** */
 	/**
 	 * This method is responsible to send Client List as Object
