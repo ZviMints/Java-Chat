@@ -16,7 +16,12 @@ public class ThreadCLIENT implements Runnable {
 	private ClientGUI gui;
 	boolean exit = false;
 	private Scanner ClientIN;
-
+	
+	// Client Messages:
+	// <close> : Disconnect the current user
+	// <getnames> : Get the online client list names
+	// Note: No need to CS Messages for Broadcast and Private.
+	
 	/* ************************** Setters and Getters ************************** */
 	/**
 	 * Construct of the Thread

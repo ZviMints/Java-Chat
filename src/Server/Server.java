@@ -29,7 +29,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
 public class Server {
 	private static int PORT = 9999; // Init the PORT for the server
 	String currnet_username = ""; // Pick name from the client

@@ -12,6 +12,11 @@ public class ThreadSERVER implements Runnable,ServerInt {
 	private PrintWriter output;
 	private Scanner input;
 	public String name = "";
+	
+	// Server Messages:
+	// <update> : Update the number of Clients online
+	// <close> : Close a Client Thread
+	// <getnames> : Get the online client list names
 
 	/* ************************** Constructor ************************** */
 	/**
