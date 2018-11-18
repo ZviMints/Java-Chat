@@ -4,8 +4,6 @@
  */
 package Client;
 import java.awt.Font;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
@@ -32,7 +30,7 @@ public class Client {
 	/**
 	 * Construct of the Client class
 	 * @param clientName is the current client name
-	 * @param host is the current host, ex "localhost"
+	 * @param host is the current host, example: local-host, IP.
 	 * @param port is the port server
 	 */
 	public Client(String clientName, String host, int port) {

@@ -8,7 +8,12 @@ class ClientTest {
 
 	@Test
 	void testClient() {
-		fail("Not yet implemented");
+		//Client
+		//if(Server.)
+		// Client.msg
+		//AsertEquals()
+		//Broadcast
+		//Private
 	}
 
 	@Test

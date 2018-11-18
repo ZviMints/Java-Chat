@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class ThreadSERVER implements Runnable {
+public class ThreadSERVER implements Runnable,ServerInt {
 	private Socket skt;
 	private PrintWriter output;
 	private Scanner input;
@@ -26,7 +26,7 @@ public class ThreadSERVER implements Runnable {
 	/* ************************** Setters And Getters ************************** */
 	/**
 	 * Getters for PrintWriter
-	 * @return PrintWriter of currect socket
+	 * @return PrintWriter of current socket
 	 */
 	private PrintWriter getWriter()
 	{
@@ -62,7 +62,10 @@ public class ThreadSERVER implements Runnable {
 		}
 		return s;
 	}
-
+	// NOTE: We can make Broadcast and Private by O(1) and not O(n) when 
+	// n is the number of clients in the list, by giving every client and unique ID
+	// and send by ID, we chose to make simple implement and make a liner search for private
+	// and broadcast messages.
 	/* ************************** Broadcast ************************** */
 	/**
 	 * This method send message from server to all clients in Server client list
@@ -125,10 +128,10 @@ public class ThreadSERVER implements Runnable {
 				if(input.hasNextLine())
 				{
 					String msg = input.nextLine();
-					if(msg.contains("@")) // Private msg
+					if(msg.contains("@")) // Private message
 					{
 						try {
-							// MUST BE OF THE FORM @<name>|<msg>
+							// MUST BE OF THE FORM @<name>|<message>
 							int index_a = msg.indexOf("@");
 							int index_name = msg.indexOf("]");
 							int index_line = msg.indexOf("|");
@@ -141,7 +144,7 @@ public class ThreadSERVER implements Runnable {
 							Private(username_to,username_from,"<"+time+">"+"[Private From "+username_from+"]: "+deliver,false);
 						}
 						catch(Exception e) // Wrong format of private message
-						// ex . @message or other.
+						// example: @message or other.
 						{
 							int index_name = msg.indexOf("]");
 							int index_triangle = msg.indexOf(">");

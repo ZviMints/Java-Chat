@@ -43,6 +43,7 @@ public class Server {
 	 */
 	public Server(int PORT)
 	{
+		Server.PORT = PORT;
 	}
 	/* **************************  Methods ************************** */
 	/**
