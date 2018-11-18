@@ -4,10 +4,11 @@
  in the Department of Computer Science, 2018
 <h3>Project site: <a href="https://zvimints.github.io/Java-Chat/">https://zvimints.github.io/Java-Chat/</a></h3>
 <h1>About the program</h1>
-This project implements a simple Server/ Client chat application using Java.
+This project implements a simple Server / Client chat application using Java.
 The program includes two packages:
 <br>
 <img src="./img/packages.jpg" width="450px" height="110px">
+<br>
 The Client package allows to the client to connect into the server, and send message to 
 <br>
 the other people that also connected to the server, the client can send message, read messages,
