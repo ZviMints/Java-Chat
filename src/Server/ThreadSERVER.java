@@ -11,7 +11,6 @@ public class ThreadSERVER implements Runnable {
 	private Socket skt;
 	private PrintWriter output;
 	private Scanner input;
-	private Server myServer;
 	public String name = "";
 
 	/* ************************** Constructor ************************** */
@@ -20,8 +19,7 @@ public class ThreadSERVER implements Runnable {
 	 * @param server is the current server
 	 * @param skt is the current socket
 	 */
-	public ThreadSERVER(Server server, Socket skt) {
-		this.myServer = server;
+	public ThreadSERVER(Socket skt) {
 		this.skt = skt;
 	}
 
@@ -158,7 +156,7 @@ public class ThreadSERVER implements Runnable {
 						{
 							int index_triangle = msg.indexOf("<");
 							String username = msg.substring(0,index_triangle);
-							myServer.getClients().remove(GetClientByName(username));
+							Server.getClients().remove(GetClientByName(username));
 							Server.count--;
 							Server.setText("*****************" + "\n" +
 									"Closing \""+username+"\"..." + "\n" +

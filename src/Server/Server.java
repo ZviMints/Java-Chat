@@ -105,7 +105,7 @@ public class Server {
 					setText("New Client: \"" + this.currnet_username + "\"" + "\n"
 							+ "Host:" + skt.getInetAddress().getHostAddress() + "\n"
 							+ "***********************************" );
-					ThreadSERVER client = new ThreadSERVER(this, skt); // Init Object of ClientThread
+					ThreadSERVER client = new ThreadSERVER(skt); // Init Object of ClientThread
 					clients.add(client); // client has added to the list
 					client.name = this.currnet_username;
 					count++; // increase online users

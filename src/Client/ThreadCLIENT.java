@@ -48,7 +48,7 @@ public class ThreadCLIENT implements Runnable {
 		PrintWriter output = new PrintWriter(skt.getOutputStream(),false);
 		output.println(username+"<close>");
 		output.flush();
-		exit = true;
+		exit = true; // Close the Thread
 	}
 	/* ************************** Run THREAD method ************************** */
 	@Override
