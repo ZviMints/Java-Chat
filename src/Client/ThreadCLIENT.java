@@ -63,15 +63,16 @@ public class ThreadCLIENT implements Runnable {
 				PrintWriter output = new PrintWriter(skt.getOutputStream(),false);
 				InputStream input = skt.getInputStream();
 				ClientIN = new Scanner(input); 
-				while(skt.isConnected()){ // Someone else sent message
-					if(input.available() > 0)
+				while(skt.isConnected()){
+					if(input.available() > 0) // Someone else sent message
 					{
 						gui.setNewMsg(ClientIN.nextLine());
+
 					}
 					if(hasMsg) // if This Thread Send Message
 					{
 						String msgtodeliever = "";
-						msgtodeliever = msgV.get(0);
+						msgtodeliever = msgV.get(0); // its Synchronized
 						msgV.remove(0);
 						hasMsg = !msgV.isEmpty();
 						output.println(msgtodeliever);

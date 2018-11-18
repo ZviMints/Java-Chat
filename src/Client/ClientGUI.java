@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -26,7 +28,7 @@ public class ClientGUI{
 	private String info_localport ;
 	private String info_Server;
 	private JTextArea allMsgFromallUsers; // The Big Msg from all users
-	private JTextArea textArea_msg; // What User Type
+	private JTextField textArea_msg; // What User Type
 	private int count = 1;
 	private ThreadCLIENT threadCLIENT;
 	private JLabel online_lbl;
@@ -103,7 +105,7 @@ public class ClientGUI{
 		});
 		frmToChatChat.getContentPane().add(btn_reset);		
 		final ImageIcon imageIcon_textArea_msg = new ImageIcon("./img/textArea_msg.png");
-	    textArea_msg = new JTextArea() { // Making TextArea From Image
+	    textArea_msg = new JTextField() { // Making TextArea From Image
 	      Image image = imageIcon_textArea_msg.getImage();
 	      {
 	        setOpaque(false);
@@ -141,9 +143,10 @@ public class ClientGUI{
 
 					String info_username = getUsername();
 					String UserInput = textArea_msg.getText();
-
-					threadCLIENT.addNextMessage("<"+getTime()+">"+"["+info_username +"]: " + UserInput);
+					String msg = "<"+getTime()+">"+"["+info_username +"]: " + UserInput;
+					threadCLIENT.addNextMessage(msg);
 					textArea_msg.setText("");
+					
 				}
 
 				else
