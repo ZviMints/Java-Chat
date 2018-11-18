@@ -26,6 +26,7 @@ public class Client {
 	private String username;
 	private String serverhost;
 	private int serverport;
+	private ThreadCLIENT threadCLIENT;
 
 	/* ************************** Setters and Getters ************************** */
 	/**
@@ -49,7 +50,7 @@ public class Client {
 		try {
 			Socket skt = new Socket(serverhost, serverport);
 			Thread.sleep(1000); // waiting for network communication for 1000 ms
-			ThreadCLIENT threadCLIENT = new ThreadCLIENT(skt, username);
+			threadCLIENT = new ThreadCLIENT(skt, username);
 			Thread serverAccessThread = new Thread(threadCLIENT); // Open new Thread for each user
 			serverAccessThread.start();
 
