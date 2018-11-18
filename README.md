@@ -21,9 +21,9 @@ Moreover, The server has a  window which can get information about chat clients.
 <h1>Class Diagram:</h1>
 <img src="./img/javadoc_classdiagram.png"  width="800px" height="410px">
 <h3>Client Package:</h3>
-<img src="./img/P_Client.jpg" width="450px" height="110px">
+<img src="./img/P_Client.jpg" width="450px" height="130px">
 <h3>Server Package:</h3>
-<img src="./img/P_Server.jpg" width="450px" height="110px">
+<img src="./img/P_Server.jpg" width="450px" height="250px">
 <hr>
 <h1>About the Server:</h1>
 METHODS: 
