@@ -50,6 +50,7 @@ public class Server {
 	 */
 	public void startServer()
 	{
+		if(PORT > 1023) {
 		clients = new ArrayList<ThreadSERVER>(); // Init the client Arraylist
 		try {
 			myServer = new ServerSocket(PORT); // Open the Server
@@ -59,6 +60,9 @@ public class Server {
 		{
 			JOptionPane.showMessageDialog(null, "Couldn't init the Server with "+PORT+" port");
 			}
+		}
+		else
+			throw new RuntimeException("Ports in [0,1023] are saved PORTs");
 	}
 
 	/* ************************** Accept Clients ************************** */
